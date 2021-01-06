@@ -34,13 +34,13 @@ START:
         add word [SECTORCOUNT], 1                   ; 섹터 번호를 1 증가
 
         ; 마지막 섹터이면 더 수행할 섹터가 없으므로 무한 루프 수행, 그렇지 않으면 다음 섹터로 이동해서 코드 수행
-        %if i == TOTALSECTORCOUNT                   ; i가 TOTALSECTORCOUNT와 같다면, 즉 마지막 섹터이면 
+        %if i == TOTALSECTORCOUNT                   ; i가 TOTALSECTORCOUNT와 같다면, 즉 마지막 섹터이면
             jmp $                                   ; 현재 위치에서 무한 루프 수행
         %else                                       ; 마지막 섹터가 아니면
             jmp (0x1000 + i * 0x20):0x0000          ; 다음 섹터 오프셋으로 이동
         %endif                                      ; if문의 끝
 
-        times (512 - ( $ - $$ ) % 512)  db  0x00    ; $: 현재 라인의 어드레스
+        times (512 - (( $ - $$ ) % 512))  db  0x00  ; $: 현재 라인의 어드레스
                                                     ; $$: 현재 섹션(.text)의 시작 어드레스
                                                     ; $ - $$: 현재 섹션을 기준으로 하는 오프셋
                                                     ; 512 - ( $ - $$ ) % 512: 현재부터 어드레스 512까지

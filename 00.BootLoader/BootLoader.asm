@@ -110,7 +110,9 @@ READDATA:
     mov al, byte [SECTORNUMBER]         ; 섹터 번호를 AL 레지스터에 저장
     add al, 0x1                         ; 섹터 번호를 1 증가
     mov byte [SECTORNUMBER], al         ; 증가시킨 섹터 번호를 SECTORNUMBER에 다시 설정
-    cmp al, 19                          ; 증가시킨 섹터 번호를 19와 비교
+    cmp al, 37                          ; 증가시킨 섹터 번호를 37와 비교
+                                        ; (예제코드는 19와 비교하는데 QEMU 구버전은 섹터 개수가 18개인 플로피디스크를 사용하지만 
+                                        ; 최신버전 QEMU는 섹터 개수가 36개인 플로피 디스크를 사용한다.)
     jl READDATA                         ; 섹터 번호가 19 미만이라면 READDATA로 이동
 
     ;   마지막 섹터까지 읽었으면(섹터 번호가 19이면) 헤드를 토글(0->1, 1->0)하고,
