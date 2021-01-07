@@ -37,3 +37,30 @@ Kernel32.bin: $(OBJECTDIRECTORY)/EntryPoint.bin $(OBJECTDIRECTORY)/Kernel32.elf.
 clean:
 	rm -f *.bin
 	rm -f $(OBJECTDIRECTORY)/*.*
+
+####################################################################
+# Make에 의해 다시 호출되는 부분, Temp 디렉터리를 기준으로 수행됨
+####################################################################
+CENTRYPOINTOBJECTFILE = Main.o
+CSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.c)
+ASSEMBLYSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.asm)
+COBJECTFILES = $(subst Main.o, , $(notdir $(patsubst %.c, %.o, $(CSOURCEFILES))))
+ASSEMBLYOBJECTFILES = $(notdir $(patsubst %.asm, %.o, $(ASSEMBLYSOURCEFILES)))
+
+# .c 파일을 .o 파일로 바꾸는 규칙 정의
+%.o: ../$(SOURCEDIRECTORY)/%.c
+	$(GCC32) -c $<
+
+# .asm 파일을 .o 파일로 바꾸는 규칙 정의
+%.o: ../$(SOURCEDIRECTORY)/%.asm
+	$(NASM32) -f elf32 -o $@ $<
+
+InternalDependency:
+	$(GCC32) -MM $(CSOURCEFILES) > Dependency.dep
+
+Kernel32.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
+	$(LD32) -o $@ $^
+
+ifeq (Dependency.dep, $(wildcard Dependency.dep))
+include Dependency.dep
+endif
