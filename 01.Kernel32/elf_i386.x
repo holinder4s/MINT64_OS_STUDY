@@ -142,6 +142,12 @@ SECTIONS
     KEEP (*(.fini_array EXCLUDE_FILE (*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .dtors))
     PROVIDE_HIDDEN (__fini_array_end = .);
   }
+
+/***************************************************************/
+/* 섹션 재배치로 인해 이동된 부분  */
+  _edata = .; PROVIDE (edata = .);
+/***************************************************************/
+
   .ctors          :
   {
     /* gcc uses crtbegin.o to find the start of
@@ -177,7 +183,6 @@ SECTIONS
   .got            : { *(.got) *(.igot) }
   . = DATA_SEGMENT_RELRO_END (SIZEOF (.got.plt) >= 12 ? 12 : 0, .);
   .got.plt        : { *(.got.plt) *(.igot.plt) }
-  _edata = .; PROVIDE (edata = .);
   . = .;
   . = DATA_SEGMENT_END (.);
   /* Stabs debugging sections.  */
