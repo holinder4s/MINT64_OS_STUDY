@@ -8,6 +8,9 @@
 
 #define BYTESOFSECTOR   512
 
+// 함수 선언
+int AdjustInSectorSize(int iFd, int iSourceSize);
+
 // main 함수
 int main(int argc, char *argv[]) {
     int iSourceFd;
@@ -71,4 +74,29 @@ int main(int argc, char *argv[]) {
     close(iTargetFd);
 
     return 0;
+}
+
+// 현재 위치부터 512바이트 배수 위치까지 맞추어 0x00으로 채움
+int AdjustInSectorSize(int iFd, int iSourceSize) {
+    int i;
+    int iAdjustSizeToSector;
+    char cCh;
+    int iSectorCount;
+
+    iAdjustSizeToSector = iSourceSize % BYTESOFSECTOR;
+    cCh = 0x00;
+
+    if(iAdjustSizeToSector != 0) {
+        iAdjustSizeToSector = 512 - iAdjustSizeToSector;
+        printf("[INFO] File size [%lu] and fill [%u] byte.\n", iSourceSize, iAdjustSizeToSector);
+        for(i=0; i<iAdjustSizeToSector; i++) {
+            write(iFd, &cCh, 1);
+        }
+    }else {
+        printf("[INFO] File size is aligned 512 byte.\n");
+    }
+
+    // 섹터 수를 되돌려줌
+    iSectorCount = (iSOurceSize + iAdjustSizeToSector) / BYTESOFSECTOR;
+    return iSectorCount;
 }
