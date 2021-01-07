@@ -9,10 +9,31 @@ OBJCOPY32 = x86_64-pc-linux-objcopy -j .text -j .data -j .rodata -j .bss -S -O b
 OBJECTDIRECTORY = Temp
 SOURCEDIRECTORY = Source
 
-all: Kernel32.bin
+####################################################################
+# 빌드 항목 및 빌드 방법 설정
+####################################################################
+all: prepare Kernel32.bin
 
-Kernel32.bin: Source/EntryPoint.s
-	nasm -o Kernel32.bin $<
+prepare:
+	mkdir -p $(OBJECTDIRECTORY)
+
+$(OBJECTDIRECTORY)/EntryPoint.bin: $(SOURCEDIRECTORY)/EntryPoint.s
+	$(NASM32) -o $@ $<
+
+dep:
+	@echo === Make Dependancy File ===
+	make -C $(OBJECTDIRECTORY) -f ../Makefile InternalDependency
+	@echo === Dependancy Search Complete ===
+
+ExecuteInternalBuild: dep
+	make -C $(OBJECTDIRECTORY) -f ../Makefile Kernel32.elf
+
+$(OBJECTDIRECTORY)/Kernel32.elf.bin: ExecuteInternalBuild
+	$(OBJCOPY32) $(OBJECTDIRECTORY)/Kernel32.elf $@
+
+Kernel32.bin: $(OBJECTDIRECTORY)/EntryPoint.bin $(OBJECTDIRECTORY)/Kernel32.elf.bin
+	cat $^ > $@
 
 clean:
-	rm -f Kernel32.bin
+	rm -f *.bin
+	rm -f $(OBJECTDIRECTORY)/*.*
