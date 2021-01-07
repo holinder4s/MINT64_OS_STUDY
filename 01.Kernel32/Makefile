@@ -3,7 +3,7 @@
 ####################################################################
 NASM32 = nasm
 GCC32 = x86_64-pc-linux-gcc -c -m32 -ffreestanding
-LD32 = x86_64-pc-linux-ld -melf_i386 -T ../elf_I386.x -nostdlib -e Main -Ttext 0x10200
+LD32 = x86_64-pc-linux-ld -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
 OBJCOPY32 = x86_64-pc-linux-objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
 OBJECTDIRECTORY = Temp
