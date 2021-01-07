@@ -7,11 +7,24 @@ OUTPUT_FORMAT("elf32-i386", "elf32-i386",
 	      "elf32-i386")
 OUTPUT_ARCH(i386)
 ENTRY(_start)
-SEARCH_DIR("/home/holinder4s/cross/i386-pc-linux/lib32"); SEARCH_DIR("/home/holinder4s/cross/x86_64-pc-linux/lib32"); SEARCH_DIR("/home/holinder4s/cross/lib32"); SEARCH_DIR("/usr/local/lib32"); SEARCH_DIR("/lib32"); SEARCH_DIR("/usr/lib32"); SEARCH_DIR("/home/holinder4s/cross/i386-pc-linux/lib"); SEARCH_DIR("/home/holinder4s/cross/lib"); SEARCH_DIR("/usr/local/lib"); SEARCH_DIR("/lib"); SEARCH_DIR("/usr/lib");
+SEARCH_DIR("/home/holinder4s/cross/x86_64-pc-linux/lib");
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
   PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x08048000)); . = SEGMENT_START("text-segment", 0x08048000) + SIZEOF_HEADERS;
+  /***************************************************************/
+  /*  섹션 재배치로 인해 앞으로 이동된 부분  */
+  .text 0x10200           :
+  {
+    *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+    *(.text.exit .text.exit.*)
+    *(.text.startup .text.startup.*)
+    *(.text.hot .text.hot.*)
+    *(SORT(.text.sorted.*))
+    *(.text .stub .text.* .gnu.linkonce.t.*)
+    /* .gnu.warning sections are handled specially by elf.em.  */
+    *(.gnu.warning)
+  } =0x90909090
   .interp         : { *(.interp) }
   .note.gnu.build-id  : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
@@ -48,17 +61,6 @@ SECTIONS
   .plt            : { *(.plt) *(.iplt) }
 .plt.got        : { *(.plt.got) }
 .plt.sec        : { *(.plt.sec) }
-  .text           :
-  {
-    *(.text.unlikely .text.*_unlikely .text.unlikely.*)
-    *(.text.exit .text.exit.*)
-    *(.text.startup .text.startup.*)
-    *(.text.hot .text.hot.*)
-    *(SORT(.text.sorted.*))
-    *(.text .stub .text.* .gnu.linkonce.t.*)
-    /* .gnu.warning sections are handled specially by elf.em.  */
-    *(.gnu.warning)
-  }
   .fini           :
   {
     KEEP (*(SORT_NONE(.fini)))
