@@ -10,6 +10,8 @@
 
 // 함수 선언
 int AdjustInSectorSize(int iFd, int iSourceSize);
+void WriteKernelInformation(int iTargetFd, int iKernelSectorCount);
+int CopyFile(int iSourceFd, int iTargetFd);
 
 // main 함수
 int main(int argc, char *argv[]) {
@@ -99,4 +101,47 @@ int AdjustInSectorSize(int iFd, int iSourceSize) {
     // 섹터 수를 되돌려줌
     iSectorCount = (iSOurceSize + iAdjustSizeToSector) / BYTESOFSECTOR;
     return iSectorCount;
+}
+
+// 부트 로더에 커널에 대한 정보를 삽입
+void WriteKernelInformation(int iTargetFd, int iKernelSectorCount) {
+    unsigned short usData;
+    long lPosition;
+
+    // 파일의 시작에서 5바이트 떨어진 위치가 커널의 총 섹터 수 정보를 나타냄
+    lPosition = lseek(iTargetFd, (off_t)5, SEEK_SET);
+    if(lPosition == -1) {
+        fprintf(stderr, "[ERROR] lseek fail. Return value = %d, errno = %d, %d\n", lPosition, errno, SEEK_SET);
+        exit(-1);
+    }
+
+    usData = (unsigned short)iKernelSectorCount;
+    write(iTargetFd, &usData, 2);
+
+    printf("[INFO] Total sector count except boot loader [%d]\n", iKernelSectorCount);
+}
+
+// 소스 파일(Source FD)의 내용을 목표 파일(Target FD)에 복사하고 그 크기를 되돌려줌
+int CopyFile(int iSourceFd, int iTargetFd) {
+    int iSourceFileSize;
+    int iRead;
+    int iWrite;
+    char vcBuffer[BYTESOFSECTOR];
+
+    iSourceFileSize = 0;
+    while(1) {
+        iRead = read(iSourceFd, vcBuffer, sizeof(vcBuffer));
+        iWrite = write(iTargetFd, vcBuffer, iRead);
+
+        if(iRead != iWrite) {
+            fprintf(stderr, "[ERROR] iRead != iWrite.. \n");
+            exit(-1);
+        }
+        iSourceFileSize += iRead;
+
+        if(iRead != sizeof(vcBuffer)) {
+            break;
+        }
+    }
+    return iSourceFileSize;
 }
