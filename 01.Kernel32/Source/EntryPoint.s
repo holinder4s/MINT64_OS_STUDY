@@ -10,6 +10,12 @@ SECTION .text           ; text 섹션(세그먼트)을 정의
 ;   아래의 데이터들을 8바이트에 맞춰 정렬하기 위해 추가
 align 8, db 0
 
+;   GDTR의 끝을 8byte로 정렬하기 위해 추가
+dw 0x0000
+;   GDTR 자료구조 정의
+GDTR:
+    dw GDTEND - GDT - 1         ; 아래에 위치하는 GDT 테이블의 전체 크기
+    dd ( GDT - $$ + 0x10000 )   ; 아래에 위치하는 GDT 테이블의 시작 어드레스
 
 ;   GDT 테이블 정의
 GDT:
