@@ -1,4 +1,4 @@
-all: BootLoader Disk.img
+all: Disk.img
 
 00.BootLoader/BootLoader.bin:
 	@echo
