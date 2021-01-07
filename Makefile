@@ -27,7 +27,7 @@ Disk.img: BootLoader Kernel32
 	@echo ======================= Disk Image Build Start =======================
 	@echo
 
-	cat 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin > Disk.img
+	./ImageMaker.exe $^
 
 	@echo
 	@echo ======================= All Build Complete =======================
