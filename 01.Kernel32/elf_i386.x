@@ -56,6 +56,7 @@ SECTIONS
   . = SEGMENT_START("ldata-segment", .);
   . = ALIGN(32 / 8);
   _end = .; PROVIDE (end = .);
+  /***************************************************************/
 
   .interp         : { *(.interp) }
   .note.gnu.build-id  : { *(.note.gnu.build-id) }
