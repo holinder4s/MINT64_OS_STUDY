@@ -28,7 +28,10 @@ SECTIONS
 
   .rodata         : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
   .rodata1        : { *(.rodata1) }
-  
+
+  /*  데이터영역의 시작을 섹터 단위로 맞춤  */
+  . = ALIGN (512);
+
   .interp         : { *(.interp) }
   .note.gnu.build-id  : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
