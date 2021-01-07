@@ -98,7 +98,7 @@ int AdjustInSectorSize(int iFd, int iSourceSize) {
     }
 
     // 섹터 수를 되돌려줌
-    iSectorCount = (iSOurceSize + iAdjustSizeToSector) / BYTESOFSECTOR;
+    iSectorCount = (iSourceSize + iAdjustSizeToSector) / BYTESOFSECTOR;
     return iSectorCount;
 }
 
