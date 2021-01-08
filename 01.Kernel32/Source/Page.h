@@ -36,4 +36,8 @@ typedef struct kPageTableEntryStruct {
 
 #pragma pack(pop)
 
+// 함수
+void kInitializePageTables(void);
+void kSetPageEntryData(PTENTRY *pstEntry, DWORD dwUpperBaseAddress, DWORD dwLowerBaseAddress, DWORD dwLowerFlags, DWORD dwUpperFlags);
+
 #endif  /*__PAGE_H__*/
