@@ -36,3 +36,9 @@ void kInitializePageTables(void) {
         dwMappingAddress += PAGE_DEFAULTSIZE;
     }
 }
+
+// 페이지 엔트리에 기준 주소와 속성 플래그를 설정
+void kSetPageEntryData(PTENTRY *pstEntry, DWORD dwUpperBaseAddress, DWORD dwLowerBaseAddress, DWORD dwLowerFlags, DWORD dwUpperFlags) {
+    pstEntry->dwAttributeAndLowerBaseAddress = dwLowerBaseAddress | dwLowerFlags;
+    pstEntry->dwUpperBaseAddressAndEXB = (dwUpperBaseAddress & 0xFF) | dwUpperFlags;
+}
