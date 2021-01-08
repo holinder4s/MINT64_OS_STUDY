@@ -20,4 +20,20 @@
 #define PAGE_MAXENTRYCOUNT  512
 #define PAGE_DEFAULTSIZE    0x200000
 
+// 구조체
+#pragma pack(push, 1)
+
+// 페이지 엔트리에 대한 자료구조
+typedef struct kPageTableEntryStruct {
+    // PML4TE와 PDPTE의 경우
+    // 1비트 P, RW, US, PWT, PCD, A, D, PS, G, 3비트 Avail, 1비트 PAT, 8비트 Reserved, 20비트 Base Address
+    // PDE의 경우
+    // 1비트 P, RW, US, PWT, PCD, A, D, 1, G, 3비트 Avail, 1비트 PAT, 8비트 Avail, 11비트 Base Address
+    DWORD dwAttributeAndLowerBaseAddress;
+    // 8비트 Upper BaseAddress, 12비트 Reserved, 11비트 Avail, 1비트 EXB
+    DWORD dwUpperBaseAddressAndEXB;
+} PML4TENTRY, PDPTENTRY, PDENTRY, PTENTRY;
+
+#pragma pack(pop)
+
 #endif  /*__PAGE_H__*/
