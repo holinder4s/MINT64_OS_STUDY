@@ -15,4 +15,12 @@ void kInitializePageTables(void) {
     for(i=1; i<PAGE_MAXENTRYCOUNT; i++) {
         kSetPageEntryData(&(pstPML4TEntry[i]), 0, 0, 0, 0);
     }
+
+    // 페이지 디렉터리 포인터 테이블 생성
+    // 하나의 PDPT로 512GB까지 매핑 가능하므로 하나로 충분함
+    // 64개의 엔트리를 설정하여 64GB까지 매핑함
+    pstPDPTEntry = (PDPTENTRY *)0x101000;
+    for(i=0; i<64; i++) {
+        kSetPageEntryData(&(pstPDPTEntry[i]), 0, 0x102000 + (i * PAGE_TABLESIZE), PAGE_FLAGS_DEFAULT, 0);
+    }
 }
