@@ -21,8 +21,13 @@ void Main(void) {
     }
 
     // IA-32e 모드의 커널 영역을 초기화
-    kInitializeKernel64Area();
-    kPrintString(0, 5, "IA-32e Kernel Area Initialization Complete.");
+    kPrintString(0, 5, "IA-32e Kernel Area Initialize...............[    ]");
+    if(kInitializeKernel64Area() == FALSE) {
+        kPrintString(45, 5, "FAIL");
+        kPrintString(0, 6, "Kernel Area Initialization Fail~!!");
+        while(1);
+    }
+    kPrintString(45, 5, "PASS");
 
     while(1);
 }
