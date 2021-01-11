@@ -57,6 +57,11 @@ void Main(void) {
         while(1);
     }
 
+    // IA-32e 모드로 전환
+    kPrintString(0, 9, "Switch To IA-32e Mode");
+    // 원래는 아래 함수를 호출해야 하나 IA-32e 모드 커널이 없으므로 주석 처리
+    // kSwitchAndExecute64bitKernel();
+
     while(1);
 }
 
