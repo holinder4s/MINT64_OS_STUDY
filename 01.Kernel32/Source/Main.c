@@ -1,5 +1,6 @@
 #include "Types.h"
 #include "Page.h"
+#include "ModeSwitch.h"
 
 void kPrintString(int iX, int iY, const char *pcString);
 BOOL kInitializeKernel64Area(void);
@@ -8,6 +9,8 @@ BOOL kIsMemoryEnough(void);
 // Main 함수
 void Main(void) {
     DWORD i;
+    DWORD dwEAX, dwEBX, dwECX, dwEDX;
+    char vcVendorString[13] = {0, };
 
     kPrintString(0, 3, "C Language Kernel Started...................[PASS]");
 
@@ -31,9 +34,17 @@ void Main(void) {
     kPrintString(45, 5, "PASS");
 
     // IA-32e 모드 커널을 위한 페이지 테이블 생성
-    kPrintString(0, 6, "IA-32e Page Tables Initialize.............. [    ]");
+    kPrintString(0, 6, "IA-32e Page Tables Initialize...............[    ]");
     kInitializePageTables();
     kPrintString(45, 6, "PASS");
+
+    // 프로세서 제조사 정보 읽기
+    kReadCPUID(0x00, &dwEAX, &dwEBX, &dwECX, &dwEDX);
+    *(DWORD *)vcVendorString = dwEBX;
+    *((DWORD *)vcVendorString + 1) = dwEDX;
+    *((DWORD *)vcVendorString + 2) = dwECX;
+    kPrintString(0, 7, "Processor Vendor String.....................[            ]");
+    kPrintString(45, 7, vcVendorString);
 
     while(1);
 }
