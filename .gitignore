@@ -37,6 +37,7 @@
 *.hex
 *.bin
 *.img
+ImageMaker
 
 # Debug files
 *.dSYM/
