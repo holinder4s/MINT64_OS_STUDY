@@ -7,11 +7,52 @@ OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64",
 	      "elf64-x86-64")
 OUTPUT_ARCH(i386:x86-64)
 ENTRY(_start)
-SEARCH_DIR("/home/holinder4s/cross/x86_64-pc-linux/lib64"); SEARCH_DIR("/home/holinder4s/cross/lib64"); SEARCH_DIR("/usr/local/lib64"); SEARCH_DIR("/lib64"); SEARCH_DIR("/usr/lib64"); SEARCH_DIR("/home/holinder4s/cross/x86_64-pc-linux/lib"); SEARCH_DIR("/home/holinder4s/cross/lib"); SEARCH_DIR("/usr/local/lib"); SEARCH_DIR("/lib"); SEARCH_DIR("/usr/lib");
+SEARCH_DIR("/home/holinder4s/cross/x86_64-pc-linux/lib64"); SEARCH_DIR("/home/holinder4s/cross/x86_64-pc-linux/lib");
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
   PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x400000)); . = SEGMENT_START("text-segment", 0x400000) + SIZEOF_HEADERS;
+  /***************************************************************/
+  /* 섹션 재배치로 인해 앞으로 이동된 부분 */
+  .text 0x200000           :
+  {
+    *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+    *(.text.exit .text.exit.*)
+    *(.text.startup .text.startup.*)
+    *(.text.hot .text.hot.*)
+    *(SORT(.text.sorted.*))
+    *(.text .stub .text.* .gnu.linkonce.t.*)
+    /* .gnu.warning sections are handled specially by elf.em.  */
+    *(.gnu.warning)
+  } =0x90909090
+
+  .rodata         : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
+  .rodata1        : { *(.rodata1) }
+
+  /* 데이터 영역의 시작을 섹터 단위로 맞춤 */
+  . = ALIGN(512);
+
+  .data           :
+  {
+    *(.data .data.* .gnu.linkonce.d.*)
+    SORT(CONSTRUCTORS)
+  }
+  .data1          : { *(.data1) }
+
+  __bss_start = .;
+  .bss            :
+  {
+   *(.dynbss)
+   *(.bss .bss.* .gnu.linkonce.b.*)
+   *(COMMON)
+   /* Align here to ensure that the .bss section occupies space up to
+      _end.  Align after .bss to ensure correct alignment even if the
+      .bss section disappears because there are no input sections.
+      FIXME: Why do we need it? When there is no .bss section, we do not
+      pad the .data section.  */
+   . = ALIGN(. != 0 ? 64 / 8 : 1);
+  }
+  /***************************************************************/
   .interp         : { *(.interp) }
   .note.gnu.build-id  : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
@@ -51,17 +92,6 @@ SECTIONS
   .plt            : { *(.plt) *(.iplt) }
 .plt.got        : { *(.plt.got) }
 .plt.sec        : { *(.plt.sec) }
-  .text           :
-  {
-    *(.text.unlikely .text.*_unlikely .text.unlikely.*)
-    *(.text.exit .text.exit.*)
-    *(.text.startup .text.startup.*)
-    *(.text.hot .text.hot.*)
-    *(SORT(.text.sorted.*))
-    *(.text .stub .text.* .gnu.linkonce.t.*)
-    /* .gnu.warning sections are handled specially by elf.em.  */
-    *(.gnu.warning)
-  }
   .fini           :
   {
     KEEP (*(SORT_NONE(.fini)))
@@ -69,8 +99,6 @@ SECTIONS
   PROVIDE (__etext = .);
   PROVIDE (_etext = .);
   PROVIDE (etext = .);
-  .rodata         : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
-  .rodata1        : { *(.rodata1) }
   .eh_frame_hdr   : { *(.eh_frame_hdr) *(.eh_frame_entry .eh_frame_entry.*) }
   .eh_frame       : ONLY_IF_RO { KEEP (*(.eh_frame)) *(.eh_frame.*) }
   .gcc_except_table   : ONLY_IF_RO { *(.gcc_except_table .gcc_except_table.*) }
@@ -147,27 +175,8 @@ SECTIONS
   .got            : { *(.got) *(.igot) }
   . = DATA_SEGMENT_RELRO_END (SIZEOF (.got.plt) >= 24 ? 24 : 0, .);
   .got.plt        : { *(.got.plt) *(.igot.plt) }
-  .data           :
-  {
-    *(.data .data.* .gnu.linkonce.d.*)
-    SORT(CONSTRUCTORS)
-  }
-  .data1          : { *(.data1) }
   _edata = .; PROVIDE (edata = .);
   . = .;
-  __bss_start = .;
-  .bss            :
-  {
-   *(.dynbss)
-   *(.bss .bss.* .gnu.linkonce.b.*)
-   *(COMMON)
-   /* Align here to ensure that the .bss section occupies space up to
-      _end.  Align after .bss to ensure correct alignment even if the
-      .bss section disappears because there are no input sections.
-      FIXME: Why do we need it? When there is no .bss section, we do not
-      pad the .data section.  */
-   . = ALIGN(. != 0 ? 64 / 8 : 1);
-  }
   .lbss   :
   {
     *(.dynlbss)
