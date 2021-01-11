@@ -2,6 +2,7 @@
 
 ; C 언어에서 호출할 수 있도록 이름을 노출함(Export)
 global kReadCPUID
+global kSwitchAndExecute64bitKernel
 
 SECTION .text       ; text 섹션(세그먼트)을 정의
 
