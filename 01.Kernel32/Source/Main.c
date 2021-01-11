@@ -46,6 +46,17 @@ void Main(void) {
     kPrintString(0, 7, "Processor Vendor String.....................[            ]");
     kPrintString(45, 7, vcVendorString);
 
+    // 64비트 지원 유무 확인
+    kReadCPUID(0x80000001, &dwEAX, &dwEBX, &dwECX, &dwEDX);
+    kPrintString(0, 8, "64bit Mode Support Check....................[    ]");
+    if(dwEDX & (1 << 29)) {
+        kPrintString(45, 8, "PASS");
+    }else {
+        kPrintString(45, 8, "FAIL");
+        kPrintString(0, 9, "This processor does not support 64bit mode~!!");
+        while(1);
+    }
+
     while(1);
 }
 
