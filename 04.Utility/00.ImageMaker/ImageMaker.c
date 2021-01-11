@@ -9,7 +9,7 @@
 
 // 함수 선언
 int AdjustInSectorSize(FILE *iFd, unsigned long long iSourceSize);
-void WriteKernelInformation(FILE *iTargetFd, int iKernelSectorCount);
+void WriteKernelInformation(FILE *iTargetFd, int iTotalKernelSectorCount, int iKernel32SectorCount);
 unsigned long long CopyFile(FILE *iSourceFd, FILE *iTargetFd);
 
 // main 함수
@@ -18,11 +18,12 @@ int main(int argc, char *argv[]) {
     FILE *iTargetFd;
     int iBootLoaderSize;
     int iKernel32SectorCount;
+    int iKernel64SectorCount;
     unsigned long long iSourceSize;
 
     // 커맨드 라인 옵션 검사
-    if(argc < 3) {
-        fprintf(stderr, "[ERROR] ImageMaker BootLoader.bin Kernel32.bin\n");
+    if(argc < 4) {
+        fprintf(stderr, "[ERROR] ImageMaker BootLoader.bin Kernel32.bin Kernel64.bin\n");
         exit(-1);
     }
 
@@ -65,11 +66,27 @@ int main(int argc, char *argv[]) {
     printf("[INFO] %s size = [%llu] and sector count = [%d]\n", argv[2], iSourceSize, iKernel32SectorCount);
 
     //-----------------------------------------------------------------------
+    // 64비트 커널 파일을 열어서 모든 내용을 디스크 이미지 파일로 복사
+    //-----------------------------------------------------------------------
+    printf("[INFO] Copy IA-32e mode kernel to image file.\n");
+    if((iSourceFd = fopen(argv[3], "rb")) == NULL) {
+        fprintf(stderr, "[ERROR] %s open fail.\n", argv[3]);
+        exit(-1);
+    }
+
+    iSourceSize = CopyFile(iSourceFd, iTargetFd);
+    fclose(iSourceFd);
+
+    // 파일 크기를 섹터 크기인 512바이트로 맞추기 위해 나머지 부분을 0x00으로 채움
+    iKernel64SectorCount = AdjustInSectorSize(iTargetFd, iSourceSize);
+    printf("[INFO] %s size = [%llu] and sector count = [%d]\n", argv[3], iSourceSize, iKernel64SectorCount);
+
+    //-----------------------------------------------------------------------
     // 디스크 이미지에 커널 정보를 갱신
     //-----------------------------------------------------------------------
     printf("[INFO] Start to write kernel information\n");
     // 부트섹터의 5번째 바이트부터 커널에 대한 정보를 넣음
-    WriteKernelInformation(iTargetFd, iKernel32SectorCount);
+    WriteKernelInformation(iTargetFd, iKernel32SectorCount + iKernel64SectorCount, iKernel32SectorCount);
     printf("[INFO] Image file create complete\n");
 
     fclose(iTargetFd);
@@ -103,7 +120,7 @@ int AdjustInSectorSize(FILE *iFd, unsigned long long iSourceSize) {
 }
 
 // 부트 로더에 커널에 대한 정보를 삽입
-void WriteKernelInformation(FILE *iTargetFd, int iKernelSectorCount) {
+void WriteKernelInformation(FILE *iTargetFd, int iTotalKernelSectorCount, int iKernel32SectorCount) {
     unsigned short usData;
     long lPosition;
 
@@ -114,10 +131,14 @@ void WriteKernelInformation(FILE *iTargetFd, int iKernelSectorCount) {
         exit(-1);
     }
 
-    usData = (unsigned short)iKernelSectorCount;
+    // 부트 로더를 제외한 총 섹터 수 및 보호 모드 커널의 섹터 수 저장
+    usData = (unsigned short)iTotalKernelSectorCount;
+    fwrite(&usData, sizeof(usData), 1, iTargetFd);
+    usData = (unsigned short)iKernel32SectorCount;
     fwrite(&usData, sizeof(usData), 1, iTargetFd);
 
-    printf("[INFO] Total sector count except boot loader [%d]\n", iKernelSectorCount);
+    printf("[INFO] Total sector count except boot loader [%d]\n", iTotalKernelSectorCount);
+    printf("[INFO] Total sector count of protected mode kernel [%d]\n", iKernel32SectorCount);
 }
 
 // 소스 파일(Source FD)의 내용을 목표 파일(Target FD)에 복사하고 그 크기를 되돌려줌
