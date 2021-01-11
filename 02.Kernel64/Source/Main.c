@@ -5,7 +5,7 @@ void kPrintString(int iX, int iY, const char *pcString);
 // Main 함수
 void Main(void) {
     kPrintString(0, 10, "Switch To IA-32e Mode Success~!!");
-    kPrintString(0, 11, "IA-32e C Language Kernel Start.............[PASS]");
+    kPrintString(0, 11, "IA-32e C Language Kernel Start..............[PASS]");
 
     while(1);
 }
