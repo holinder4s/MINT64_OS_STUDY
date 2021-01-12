@@ -13,6 +13,16 @@ BOOL kIsOutputBufferFull(void) {
     return FALSE;
 }
 
+// 입력 버퍼(포트 0x60)에 프로세서가 쓴 데이터가 남아있는지 여부를 반환
+BOOL kIsInputBufferFull(void) {
+    // 상태 레지스터(포트 0x64)에서 읽은 값에 입력 버퍼 상태 비트(비트 1)가
+    // 1로 설정되어 있으면 아직 키보드가 데이터를 가져가지 않았음
+    if(kInPortByte(0x64) & 0x02) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 
 // 키보드를 활성화
 BOOL kActivateKeyboard(void) {
