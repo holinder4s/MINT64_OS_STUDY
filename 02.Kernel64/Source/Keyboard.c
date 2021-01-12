@@ -73,3 +73,72 @@ BYTE kGetKeyboardScanCode(void) {
     }
     return kInPortByte(0x60);
 }
+
+// 키보드 LED의 ON/OFF를 변경
+BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn) {
+    int i, j;
+
+    // 키보드에 LED 변경 커맨드 전송하고 커맨드가 처리될 때까지 대기
+    for(i=0; i<0xFFFF; i++) {
+        // 입력 버퍼(포트 0x60)가 비었으면 커맨드 전송 가능
+        if(kIsInputBufferFull() == FALSE) {
+            break;
+        }
+    }
+
+    // 출력 버퍼(포트 0x60)로 LED 상태 변경 커맨드(0xED) 전송
+    kOutPortByte(0x60, 0xED);
+    for(i=0; i<0xFFFF; i++) {
+        // 입력 버퍼(포트 0x60)가 비어 있으면 키보드가 커맨드를 가져간 것임
+        if(kIsInputBufferFull() == FALSE) {
+            break;
+        }
+    }
+
+    // 키보드가 LED 상태 변경 커맨드를 가져갔으므로 ACK가 올 때가지 대기
+    for(j=0; j<100; j++) {
+        for(i=0; i<0xFFFF; i++) {
+            // 출력 버퍼(포트 0x60)가 차 있으면 데이터를 읽을 수 있음
+            if(kIsOutputBufferFull() == TRUE) {
+                break;
+            }
+        }
+
+        // 출력 버퍼(포트 0x60)에서 읽은 데이터가 ACK(0xFA)이면 성공
+        if(kInPortByte(0x60) == 0xFA) {
+            break;
+        }
+    }
+    if(j >= 100) {
+        return FALSE;
+    }
+
+    // LED 변경 값을 키보드로 전송하고 데이터가 처리가 완료될 때까지 대기
+    kOutPortByte(0x60, (bCapsLockOn << 2) | (bNumLockOn << 1) | bScrollLockOn);
+    for(i=0; i<0xFFFF; i++) {
+        // 입력 버퍼(포트 0x60)가 비어 있으면 키보드가 LED 데이터를 가져간 것임
+        if(kIsInputBufferFull() == FALSE) {
+            break;
+        }
+    }
+
+    // 키보드가 LED 데이터를 가져갔으므로 ACK가 올 때까지 대기함
+    for(j=0; j<100; j++) {
+        for(i=0; i<0xFFFF; i++) {
+            // 출력 버퍼(포트 0x60)가 차 있으면 데이터를 읽을 수 있음
+            if(kIsOutputBufferFull() == TRUE) {
+                break;
+            }
+        }
+
+        // 출력 버퍼(포트 0x60)에서 읽은 데이터가 ACK(0xFA)이면 성공
+        if(kInPortByte(0x60) == 0xFA) {
+            break;
+        }
+    }
+    if(j >= 100) {
+        return FALSE;
+    }
+
+    return TRUE;
+}
