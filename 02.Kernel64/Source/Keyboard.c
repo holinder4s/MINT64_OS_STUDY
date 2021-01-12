@@ -147,6 +147,9 @@ BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn) {
 ///////////////////////////////////////////////////////////
 // 스캔 코드를 ASCII 코드로 변환하는 기능에 관련된 함수들
 ///////////////////////////////////////////////////////////
+// 키보드 상태를 관리하는 키보드 매니저
+static KEYBOARDMANAGER gs_stKeyboardManager = {0, };
+
 // 스캔 코드를 ASCII 코드로 변환하는 테이블
 static KEYMAPPINGENTRY gs_vstKeyMappingTable[KEY_MAPPINGTABLEMAXCOUNT] = {
     /*  0   */ {    KEY_NONE        ,   KEY_NONE        },
@@ -240,3 +243,43 @@ static KEYMAPPINGENTRY gs_vstKeyMappingTable[KEY_MAPPINGTABLEMAXCOUNT] = {
     /*  87  */ {    KEY_F11         ,   KEY_F11         },
     /*  88  */ {    KEY_F12         ,   KEY_F12         }
 };
+
+// 조합된 키 값을 사용해야 하는지 여부를 반환
+BOOL kIsUseCombinedCode(BYTE bScanCode) {
+    BYTE bDownScanCode;
+    BOOL bUseCombinedKey = FALSE;
+
+    bDownScanCode = bScanCode & 0x7F;
+
+    // 알파벳 키라면 Shift 키와 Caps Lock의 영향을 받음
+    if(kIsAlphabetScanCode(bDownScanCode) == TRUE) {
+        // 만약 Shift 키와 Caps Lock 키 중에 하나만 눌러져 있으면 조합된 키를 되돌려 줌
+        if(gs_stKeyboardManager.bShiftDown ^ gs_stKeyboardManager.bCapsLockOn) {
+            bUseCombinedKey = TRUE;
+        }else {
+            bUseCombinedKey = FALSE;
+        }
+    }
+    // 숫자와 기호 키라면 Shift 키의 영향을 받음
+    else if(kIsNumberOrSymbolScanCode(bDownScanCode) == TRUE) {
+        // Shift 키가 눌러져 있으면 조합된 키를 되돌려 줌
+        if(gs_stKeyboardManager.bShiftDown == TRUE) {
+            bUseCombinedKey = TRUE;
+        }else {
+            bUseCombinedKey = FALSE;
+        }
+    }
+    // 숫자 패드 키라면 Num Lock 키의 영향을 받음
+    // 0xE0만 제외하면 확장 키 코드와 숫자 패드의 코드가 겹치므로,
+    // 확장 키 코드가 수신되지 않았을 때만 처리 조합된 코드 사용
+    else if((kIsNumberPadScanCode(bDownScanCode) == TRUE) && (gs_stKeyboardManager.bExtendedCodeIn == FALSE)) {
+        // Num Lock 키가 눌러져 있으면, 조합된 키를 되돌려 줌
+        if(gs_stKeyboardManager.bNumLockOn == TRUE) {
+            bUseCombinedKey = TRUE;
+        }else {
+            bUseCombinedKey = FALSE;
+        }
+    }
+
+    return bUseCombinedKey;
+}
