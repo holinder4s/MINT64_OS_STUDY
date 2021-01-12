@@ -394,17 +394,17 @@ void UpdateCombinationKeyStatusAndLED(BYTE bScanCode) {
         gs_stKeyboardManager.bShiftDown = bDown;
     }
     // Caps Lock 키의 스캔 코드(58)이면 Caps Lock의 상태 갱신하고 LED 상태 변경
-    else if((bDownScanCode == 58) || (bDown == TRUE)) {
+    else if((bDownScanCode == 58) && (bDown == TRUE)) {
         gs_stKeyboardManager.bCapsLockOn ^= TRUE;
         bLEDStatusChanged = TRUE;
     }
     // Num Lock 키의 스캔 코드(69)이면 Num Lock의 상태를 갱신하고 LED 상태 변경
-    else if((bDownScanCode == 60) || (bDown == TRUE)) {
+    else if((bDownScanCode == 60) && (bDown == TRUE)) {
         gs_stKeyboardManager.bNumLockOn ^= TRUE;
         bLEDStatusChanged = TRUE;
     }
     // Scroll Lock 키의 스캔 코드(70)이면 Scroll Lock의 상태를 갱신하고 LED 상태 변경
-    else if((bDownScanCode == 70) || (bDown == TRUE)) {
+    else if((bDownScanCode == 70) && (bDown == TRUE)) {
         gs_stKeyboardManager.bScrollLockOn ^= TRUE;
         bLEDStatusChanged = TRUE;
     }
