@@ -17,4 +17,11 @@ typedef struct kKeyMappingEntryStruct {
 
 #pragma pack(pop)
 
+// 함수
+BOOL kIsOutputBufferFull(void);
+BOOL kIsInputBufferFull(void);
+BOOL kActivateKeyboard(void);
+BYTE kGetKeyboardScanCode(void);
+BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn);
+
 #endif /*__KEYBOARD_H__*/
