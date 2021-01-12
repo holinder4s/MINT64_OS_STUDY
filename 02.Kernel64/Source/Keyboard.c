@@ -244,6 +244,16 @@ static KEYMAPPINGENTRY gs_vstKeyMappingTable[KEY_MAPPINGTABLEMAXCOUNT] = {
     /*  88  */ {    KEY_F12         ,   KEY_F12         }
 };
 
+// 스캔 코드가 알파벳 범위인지 여부를 반환
+BOOL kIsAlphabetScanCode(BYTE bScanCode) {
+    // 변환 테이블을 값을 직접 읽어서 알파벳 범위인지 확인
+    if(('a' <= gs_vstKeyMappingTable[bScanCode].bNormalCode) && (gs_vstKeyMappingTable[bScanCode].bNormalCode <= 'z')) {
+        return TRUE;
+    }else {
+        return FALSE;
+    }
+}
+
 // 조합된 키 값을 사용해야 하는지 여부를 반환
 BOOL kIsUseCombinedCode(BYTE bScanCode) {
     BYTE bDownScanCode;
