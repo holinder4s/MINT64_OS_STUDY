@@ -415,6 +415,15 @@ void UpdateCombinationKeyStatusAndLED(BYTE bScanCode) {
     }
 }
 
+BOOL IsPrintableASCIICode(BYTE bScanCode) {
+    BYTE bDownScanCode;
+
+    if((bDownScanCode == 0x2A) || (bDownScanCode == 0x36)) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
 // 스캔 코드를 ASCII 코드로 변환
 BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE *pbASCIICode, BOOL *pbFlags) {
     BOOL bUseCombinedKey;
@@ -463,5 +472,10 @@ BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE *pbASCIICode, BOOL *pbFlag
 
     // 조합 키 눌림이나 떨어짐 상태를 갱신
     UpdateCombinationKeyStatusAndLED(bScanCode);
+
+    if(IsPrintableASCIICode(bScanCode) == FALSE) {
+        return FALSE;
+    }
+
     return TRUE;
 }

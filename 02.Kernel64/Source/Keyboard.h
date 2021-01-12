@@ -93,6 +93,7 @@ BOOL kIsNumberOrSymbolScanCode(BYTE bScanCode);
 BOOL kIsNumberPadScanCode(BYTE bScanCode);
 BOOL kIsUseCombinedCode(BYTE bScanCode);
 void UpdateCombinationKeyStatusAndLED(BYTE bScanCode);
+BOOL IsPrintableASCIICode(BYTE bScanCode);
 BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE *pbASCIICode, BOOL *pbFlags);
 
 #endif /*__KEYBOARD_H__*/
