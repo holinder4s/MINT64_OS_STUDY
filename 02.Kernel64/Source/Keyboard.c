@@ -144,6 +144,42 @@ BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn) {
     return TRUE;
 }
 
+// A20 게이트를 활성화
+void kEnableA20Gate(void) {
+    BYTE bOutputPortData;
+    int i;
+
+    // 컨트롤 레지스터(포트 0x64)에 키보드 컨트롤러의 출력 포트 값을 읽는 커맨드(0xD0) 전송
+    kOutPortByte(0x64, 0xD0);
+
+    // 출력 포트의 데이터를 기다렸다가 읽음
+    for(i=0; i<0xFFFF; i++) {
+        // 출력 버퍼(포트 0x60)가 차 있으면 데이터를 읽을 수 있음
+        if(kIsOutputBufferFull() == TRUE) {
+            break;
+        }
+    }
+    // 출력 포트(포트 0x60)에 수신된 키보드 컨트롤러의 출력 포트 값을 읽음
+    bOutputPortData = kInPortByte(0x60);
+
+    // A20 게이트 비트 설정
+    bOutputPortData |= 0x01;
+
+    // 입력 버퍼(포트 0x60)에 데이터가 비어 있으면 출력 포트에 값을 쓰는 커맨드와 출력 포트 데이터 전송
+    for(i=0; i<0xFFFF; i++) {
+        // 입력 버퍼(포트 0x60)가 비어있으면 커맨드 전송 가능
+        if(kIsInputBufferFull() == FALSE) {
+            break;
+        }
+    }
+
+    // 커맨드 레지스터(0x64)에 출력 포트 설정 커맨드(0xD1)를 전달
+    kOutPortByte(0x64, 0xD1);
+
+    // 입력 버퍼(0x60)에 A20 게이트 비트가 1로 설정된 값을 전달
+    kOutPortByte(0x60, bOutputPortData);
+}
+
 ///////////////////////////////////////////////////////////
 // 스캔 코드를 ASCII 코드로 변환하는 기능에 관련된 함수들
 ///////////////////////////////////////////////////////////

@@ -86,6 +86,7 @@ BOOL kIsInputBufferFull(void);
 BOOL kActivateKeyboard(void);
 BYTE kGetKeyboardScanCode(void);
 BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn);
+void kEnableA20Gate(void);
 BOOL kIsAlphabetScanCode(BYTE bScanCode);
 BOOL kIsNumberOrSymbolScanCode(BYTE bScanCode);
 BOOL kIsNumberPadScanCode(BYTE bScanCode);
