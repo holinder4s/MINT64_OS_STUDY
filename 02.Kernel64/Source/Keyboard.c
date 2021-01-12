@@ -3,6 +3,17 @@
 ///////////////////////////////////////////////////////////
 // 키보드 컨트롤러와 키보드 제어에 관련된 함수
 ///////////////////////////////////////////////////////////
+// 출력 버퍼(포트 0x60)에 수신된 데이터가 있는지 여부를 반환
+BOOL kIsOutputBufferFull(void) {
+    // 상태 레지스터(포트 0x64)에서 읽은 값에 출력 버퍼 상태 비트(비트 0)가
+    // 1로 설정되어 있으면 출력 버퍼에 키보드가 전송한 데이터가 존재함
+    if(kInPortByte(0x64) & 0x01) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+
 // 키보드를 활성화
 BOOL kActivateKeyboard(void) {
     int i;
@@ -40,6 +51,6 @@ BOOL kActivateKeyboard(void) {
             return TRUE;
         }
     }
-    
+
     return FALSE;
 }
