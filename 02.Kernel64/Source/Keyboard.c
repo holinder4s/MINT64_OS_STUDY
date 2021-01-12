@@ -264,6 +264,16 @@ BOOL kIsNumberOrSymbolScanCode(BYTE bScanCode) {
     }
 }
 
+// 숫자 패드 범위인지 여부를 반환
+BOOL kIsNumberPadScanCode(BYTE bScanCode) {
+    // 숫자 패드는 스캔 코드의 71~83에 있음
+    if((71 <= bScanCode) && (bScanCode <= 83)) {
+        return TRUE;
+    }else {
+        return FALSE;
+    }
+}
+
 // 조합된 키 값을 사용해야 하는지 여부를 반환
 BOOL kIsUseCombinedCode(BYTE bScanCode) {
     BYTE bDownScanCode;

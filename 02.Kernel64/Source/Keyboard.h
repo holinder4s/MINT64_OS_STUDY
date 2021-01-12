@@ -80,6 +80,7 @@ BYTE kGetKeyboardScanCode(void);
 BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn);
 BOOL kIsAlphabetScanCode(BYTE bScanCode);
 BOOL kIsNumberOrSymbolScanCode(BYTE bScanCode);
+BOOL kIsNumberPadScanCode(BYTE bScanCode);
 BOOL kIsUseCombinedCode(BYTE bScanCode);
 
 #endif /*__KEYBOARD_H__*/
