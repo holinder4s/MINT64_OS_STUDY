@@ -254,6 +254,16 @@ BOOL kIsAlphabetScanCode(BYTE bScanCode) {
     }
 }
 
+// 숫자 또는 기호 범위인지 여부를 반환
+BOOL kIsNumberOrSymbolScanCode(BYTE bScanCode) {
+    // 숫자 패드나 확장 키 범위를 제외한 범위(스캔 코드 2~53)에서 영문자가 아니면 숫자나 기호임
+    if((2 <= bScanCode) && (bScanCode <= 53) && (kIsAlphabetScanCode(bScanCode) == FALSE)) {
+        return TRUE;
+    }else {
+        return FALSE;
+    }
+}
+
 // 조합된 키 값을 사용해야 하는지 여부를 반환
 BOOL kIsUseCombinedCode(BYTE bScanCode) {
     BYTE bDownScanCode;
