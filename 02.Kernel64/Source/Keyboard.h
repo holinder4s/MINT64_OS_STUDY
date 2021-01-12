@@ -4,6 +4,14 @@
 #include "Types.h"
 
 // 매크로
+// Pause 키를 처리하기 위해 무시해야 하는 나머지 스캔 코드의 수
+#define KEY_SKIPCOUNTFORPAUSE       2
+
+// 키 상태에 대한 플래그
+#define KEY_FLAGS_UP                0x00
+#define KEY_FLAGS_DOWN              0x01
+#define KEY_FLAGS_EXTENDEDKEY       0x02
+
 // 스캔 코드 매핑 테이블에 대한 매크로
 #define KEY_MAPPINGTABLEMAXCOUNT    89
 
@@ -83,5 +91,6 @@ BOOL kIsNumberOrSymbolScanCode(BYTE bScanCode);
 BOOL kIsNumberPadScanCode(BYTE bScanCode);
 BOOL kIsUseCombinedCode(BYTE bScanCode);
 void UpdateCombinationKeyStatusAndLED(BYTE bScanCode);
+BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE *pbASCIICode, BOOL *pbFlags);
 
 #endif /*__KEYBOARD_H__*/
