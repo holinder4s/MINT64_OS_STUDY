@@ -418,6 +418,7 @@ void UpdateCombinationKeyStatusAndLED(BYTE bScanCode) {
 BOOL IsPrintableASCIICode(BYTE bScanCode) {
     BYTE bDownScanCode;
 
+    bDownScanCode = bScanCode & 0x7F;
     if((bDownScanCode == 0x2A) || (bDownScanCode == 0x36)) {
         return FALSE;
     }
