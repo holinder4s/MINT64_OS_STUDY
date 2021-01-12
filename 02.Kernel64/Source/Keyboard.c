@@ -24,7 +24,6 @@ BOOL kIsInputBufferFull(void) {
     return FALSE;
 }
 
-
 // 키보드를 활성화
 BOOL kActivateKeyboard(void) {
     int i;
@@ -64,4 +63,13 @@ BOOL kActivateKeyboard(void) {
     }
 
     return FALSE;
+}
+
+// 출력 버퍼(포트 0x60)에서 키를 읽음
+BYTE kGetKeyboardScanCode(void) {
+    // 출력 버퍼(포트 0x60)에 데이터가 있을 때가지 대기
+    while(kIsOutputBufferFull() == FALSE) {
+        ;
+    }
+    return kInPortByte(0x60);
 }
