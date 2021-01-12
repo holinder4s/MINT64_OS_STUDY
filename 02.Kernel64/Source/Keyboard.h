@@ -59,6 +59,19 @@ typedef struct kKeyMappingEntryStruct {
 
 #pragma pack(pop)
 
+// 키보드의 상태를 관리하는 자료구조
+typedef struct kKeyboardManagerStruct {
+    // 조합 키 정보
+    BOOL bShiftDown;
+    BOOL bCapsLockOn;
+    BOOL bNumLockOn;
+    BOOL bScrollLockOn;
+
+    // 확장 키를 처리하기 위한 정보
+    BOOL bExtendedCodeIn;
+    int iSkipCountForPause;
+} KEYBOARDMANAGER;
+
 // 함수
 BOOL kIsOutputBufferFull(void);
 BOOL kIsInputBufferFull(void);
