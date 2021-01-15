@@ -34,6 +34,11 @@
 #define GDT_FLAGS_UPPER_DATA (GDT_FLAGS_UPPER_G | GDT_FLAGS_UPPER_L)
 #define GDT_FLAGS_UPPER_TSS (GDT_FLAGS_UPPER_G)
 
+// 세그먼트 디스크립터 오프셋
+#define GDT_KERNELCODESEGMENT   0x08
+#define GDT_KERNELDATASEGMENT   0x10
+#define GDT_TSSSEGMENT          0X18
+
 // 기타 GDT에 관련된 매크로
 // GDTR의 시작 어드레스, 1MB에서 264KB까지는 페이지 테이블 영역
 #define GDTR_STARTADDRESS   0x142000
