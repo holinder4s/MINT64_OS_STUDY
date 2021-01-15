@@ -28,3 +28,14 @@ void kInitializeGDTTableAndTSS(void) {
     // TSS 초기화 GDT 이하 영역을 사용함
     kInitializeTSSSegment(pstTSS);
 }
+
+// 8바이트 크기의 GDT 엔트리에 값을 설정
+// 코드와 데이터 세그먼트 디스크립터를 설정하는데 사용
+void kSetGDTEntry8(GDTENTRY8 *pstEntry, DWORD dwBaseAddress, DWORD dwLimit, BYTE bUpperFlags, BYTE bLowerFlags, BYTE bType) {
+    pstEntry->wLowerLimit = dwLimit & 0xFFFF;
+    pstEntry->wLowerBaseAddress = dwBaseAddress & 0xFFFF;
+    pstEntry->bUpperBaseAddress1 = (dwBaseAddress >> 16) & 0xFF;
+    pstEntry->bTypeAndLowerFlag = bLowerFlags | bType;
+    pstEntry->bUpperLimitAndUpperFlag = ((dwLimit >> 16) & 0x0F) | bUpperFlags;
+    pstEntry->bUpperBaseAddress2 = (dwBaseAddress >> 24) & 0xFF;
+}
