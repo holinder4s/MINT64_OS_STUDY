@@ -47,6 +47,21 @@
 //===================================================================================
 // IDT
 //===================================================================================
+// 조합에 사용할 기본 매크로
+#define IDT_TYPE_INTERRUPT      0x0E
+#define IDT_TYPE_TRAP           0x0F
+#define IDT_FLAGS_DPL0          0x00
+#define IDT_FLAGS_DPL1          0x20
+#define IDT_FLAGS_DPL2          0x40
+#define IDT_FLAGS_DPL3          0x60
+#define IDT_FLAGS_P             0x80
+#define IDT_FLAGS_IST0          0
+#define IDT_FLAGS_IST1          1
+
+// 실제 사용할 매크로
+#define IDT_FLAGS_KERNEL        (IDT_FLAGS_DPL0 | IDT_FLAGS_P)
+#define IDT_FLAGS_USER          (IDT_FLAGS_DPL3 | IDT_FLAGS_P)
+
 // IST의 시작 어드레스
 #define IST_STARTADDRESS        0x700000
 // IST의 크기
