@@ -44,6 +44,14 @@
 // GDT 테이블의 크기
 #define GDT_TABLESIZE       ((sizeof(GDTENTRY8) * GDT_MAXENTRY8COUNT) + (sizeof(GDTENTRY16) * GDT_MAXENTRY16COUNT))
 
+//===================================================================================
+// IDT
+//===================================================================================
+// IST의 시작 어드레스
+#define IST_STARTADDRESS        0x700000
+// IST의 크기
+#define IST_SIZE                0x100000
+
 // 구조체
 // 1바이트로 정렬
 #pragma pack( push, 1)
