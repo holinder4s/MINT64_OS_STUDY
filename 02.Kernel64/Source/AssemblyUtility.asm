@@ -3,7 +3,7 @@
 SECTION .text       ; text 섹션(세그먼트)을 정의
 
 ; C언어에서 호출할 수 있도록 이름을 노출함
-global kInPortByte, kOutPortByte, kLoadGDTR
+global kInPortByte, kOutPortByte, kLoadGDTR, kLoadTR
 
 ; 포트로부터 1바이트를 읽음
 ;   PARAM: 포트 번호
