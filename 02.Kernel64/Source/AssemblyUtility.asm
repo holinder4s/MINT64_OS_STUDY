@@ -3,7 +3,7 @@
 SECTION .text       ; text 섹션(세그먼트)을 정의
 
 ; C언어에서 호출할 수 있도록 이름을 노출함
-global kInPortByte, kOutPortByte
+global kInPortByte, kOutPortByte, kLoadGDTR
 
 ; 포트로부터 1바이트를 읽음
 ;   PARAM: 포트 번호
@@ -31,3 +31,9 @@ kOutPortByte:
     pop rax         ; 함수에서 사용이 끝난 레지스터를 복원
     pop rdx
     ret             ; 함수를 호출한 다음 코드의 위치로 복귀
+
+; GDTR 레지스터에 GDT 테이블을 설정
+;   PARAM: GDT 테이블의 정보를 저장하는 자료구조의 어드레스
+kLoadGDTR:
+    lgdt [rdi]      ; 파라미터 1(GDTR의 어드레스)를 프로세서에 로드하여 GDT 테이블을 설정
+    ret
