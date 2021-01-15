@@ -96,5 +96,8 @@ typedef struct kTSSDataStruct {
 
 #pragma pack (pop)
 
+// 함수
+void kInitializeGDTTableAndTSS(void);
+void kSetGDTEntry8(GDTENTRY8 *pstEntry, DWORD dwBaseAddress, DWORD dwLimit, BYTE bUpperFlags, BYTE bLowerFlags, BYTE bType);
 
 #endif /*__DESCRIPTOR_H__*/
