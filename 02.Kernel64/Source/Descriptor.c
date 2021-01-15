@@ -60,3 +60,17 @@ void kInitializeTSSSegment(TSSSEGMENT *pstTSS) {
     // IO를 TSS의 limit 값보다 크게 설정함으로써 IO Map을 사용하지 않도록 함
     pstTSS->wIOMapBaseAddress = 0xFFFF;
 }
+
+//===================================================================================
+// IDT
+//===================================================================================
+// IDT 게이트 디스크립터에 값을 설정
+void kSetIDTEntry(IDTENTRY *pstEntry, void *pvHandler, WORD wSelector, BYTE bIST, BYTE bFlags, BYTE bType) {
+    pstEntry->wLowerBaseAddress = (QWORD) pvHandler & 0xFFFF;
+    pstEntry->wSegmentSelector = wSelector;
+    pstEntry->bIST = bIST & 0x03;
+    pstEntry->bTypeAndFlags = bType | bFlags;
+    pstEntry->wMiddleBaseAddress = ((QWORD)pvHandler >> 16) & 0xFFFF;
+    pstEntry->dwUpperBaseAddress = (QWORD)pvHandler >> 32;
+    pstEntry->dwReserved = 0;
+}
