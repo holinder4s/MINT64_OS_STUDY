@@ -1,6 +1,7 @@
 #include "Types.h"
 #include "Keyboard.h"
 #include "Descriptor.h"
+#include "AssemblyUtility.h"
 
 void kPrintString(int iX, int iY, const char *pcString);
 
