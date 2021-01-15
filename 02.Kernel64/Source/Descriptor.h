@@ -117,6 +117,19 @@ typedef struct kTSSDataStruct {
     WORD wIOMapBaseAddress;
 } TSSSEGMENT;
 
+// IDT 게이트 디스크립터 구조체
+typedef struct kIDTEntryStruct {
+    WORD wLowerBaseAddress;
+    WORD wSegmentSelector;
+    // 3비트 IST, 5비트 0
+    BYTE bIST;
+    // 4비트 Type, 1비트 0, 2비트 DPL, 1비트 P
+    BYTE bTypeAndFlags;
+    WORD wMiddleBaseAddress;
+    DWORD dwUpperBaseAddress;
+    DWORD dwReserved;
+} IDTENTRY;
+
 #pragma pack (pop)
 
 // 함수
