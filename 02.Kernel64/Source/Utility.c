@@ -19,3 +19,17 @@ int kMemCpy(void *pvDestination, const void *pvSource, int iSize) {
 
     return iSize;
 }
+
+// 메모리 비교
+int kMemCmp(void *pvDestination, const void *pvSource, int iSize) {
+    int i;
+    char cTemp;
+
+    for(i=0; i<iSize; i++) {
+        cTemp = ((char *)pvDestination)[i] - ((char *)pvSource)[i];
+        if(cTemp != 0) {
+            return (int)cTemp;
+        }
+    }
+    return 0;
+}

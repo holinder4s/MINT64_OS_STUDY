@@ -6,5 +6,6 @@
 // 함수
 void kMemSet(void *pvDestination, BYTE bData, int iSize);
 int kMemCpy(void *pvDestination, const void *pvSource, int iSize);
+int kMemCmp(void *pvDestination, const void *pvSource, int iSize);
 
 #endif /*__UTILITY_H__*/
