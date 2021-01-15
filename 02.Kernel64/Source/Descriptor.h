@@ -43,7 +43,7 @@
 #define GDT_MAXENTRY16COUNT 1
 // GDT 테이블의 크기
 #define GDT_TABLESIZE       ((sizeof(GDTENTRY8) * GDT_MAXENTRY8COUNT) + (sizeof(GDTENTRY16) * GDT_MAXENTRY16COUNT))
-
+#define TSS_SEGMENTSIZE     (sizeof(TSSSEGMENT))
 //===================================================================================
 // IDT
 //===================================================================================
@@ -61,6 +61,14 @@
 // 실제 사용할 매크로
 #define IDT_FLAGS_KERNEL        (IDT_FLAGS_DPL0 | IDT_FLAGS_P)
 #define IDT_FLAGS_USER          (IDT_FLAGS_DPL3 | IDT_FLAGS_P)
+
+// 기타 IDT에 관련된 매크로
+// IDT 엔트리의 개수
+#define IDT_MAXENTRYCOUNT       100
+// IDTR의 시작 어드레스, TSS 세그먼트의 뒤쪽에 위치
+#define IDTR_STARTADDRESS       (GDTR_STARTADDRESS + sizeof(GDTR) + GDT_TABLESIZE + TSS_SEGMENTSIZE)
+// IDT 테이블의 전체 크기
+#define IDT_TABLESIZE           (IDT_MAXENTRYCOUNT * sizeof(IDTENTRY))
 
 // IST의 시작 어드레스
 #define IST_STARTADDRESS        0x700000

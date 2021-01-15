@@ -64,6 +64,25 @@ void kInitializeTSSSegment(TSSSEGMENT *pstTSS) {
 //===================================================================================
 // IDT
 //===================================================================================
+// IDT 테이블을 초기화
+void kInitializeIDTTables(void) {
+    IDTR *pstIDTR;
+    IDTENTRY *pstEntry;
+    int i;
+
+    // IDTR의 시작 어드레스
+    pstIDTR = (IDTR *)IDTR_STARTADDRESS;
+    // IDT 테이블의 정보 생성
+    pstEntry = (IDTENTRY *)(IDTR_STARTADDRESS + sizeof(IDTR));
+    pstIDTR->qwBaseAddress = (QWORD)pstEntry;
+    pstIDTR->wLimit = IDT_TABLESIZE - 1;
+
+    // 0~99까지 벡터를 모두 DummyHandler로 연결
+    for(i=0; i<IDT_MAXENTRYCOUNT; i++) {
+        kSetIDTEntry(&(pstEntry[i]), kDummyHandler, 0x08, IDT_FLAGS_IST1, IDT_FLAGS_KERNEL, IDT_TYPE_INTERRUPT);
+    }
+}
+
 // IDT 게이트 디스크립터에 값을 설정
 void kSetIDTEntry(IDTENTRY *pstEntry, void *pvHandler, WORD wSelector, BYTE bIST, BYTE bFlags, BYTE bType) {
     pstEntry->wLowerBaseAddress = (QWORD) pvHandler & 0xFFFF;
