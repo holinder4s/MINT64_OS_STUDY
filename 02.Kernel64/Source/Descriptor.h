@@ -34,6 +34,16 @@
 #define GDT_FLAGS_UPPER_DATA (GDT_FLAGS_UPPER_G | GDT_FLAGS_UPPER_L)
 #define GDT_FLAGS_UPPER_TSS (GDT_FLAGS_UPPER_G)
 
+// 기타 GDT에 관련된 매크로
+// GDTR의 시작 어드레스, 1MB에서 264KB까지는 페이지 테이블 영역
+#define GDTR_STARTADDRESS   0x142000
+// 8바이트 엔트리의 개수, 널 디스크립터/커널 코드/커널 데이터
+#define GDT_MAXENTRY8COUNT  3
+// 16바이트 엔트리의 개수, TSS
+#define GDT_MAXENTRY16COUNT 1
+// GDT 테이블의 크기
+#define GDT_TABLESIZE       ((sizeof(GDTENTRY8) * GDT_MAXENTRY8COUNT) + (sizeof(GDTENTRY16) * GDT_MAXENTRY16COUNT))
+
 // 구조체
 // 1바이트로 정렬
 #pragma pack( push, 1)
