@@ -34,4 +34,57 @@
 #define GDT_FLAGS_UPPER_DATA (GDT_FLAGS_UPPER_G | GDT_FLAGS_UPPER_L)
 #define GDT_FLAGS_UPPER_TSS (GDT_FLAGS_UPPER_G)
 
+// 구조체
+// 1바이트로 정렬
+#pragma pack( push, 1)
+
+// GDTR과 IDTR 구조체
+typedef struct kGDTRStruct {
+    WORD wLimit;
+    QWORD qwBaseAddress;
+    // 16바이트 어드레스 정렬을 위해 추가
+    WORD wPading;
+    DWORD dwPading;
+} GDTR, IDTR;
+
+// 8바이트 크기의 GDT 엔트리 구조
+typedef struct kGDTEntry8Struct {
+    WORD wLowerLimit;
+    WORD wLowerBaseAddress;
+    BYTE bUpperBaseAddress1;
+    // 4비트 Type, 1비트 S, 2비트 DPL, 1비트 P
+    BYTE bTypeAndLowerFlag;
+    // 4비트 Segment Limit, 1비트 AVL, L, D/B, G
+    BYTE bUpperLimitAndUpperFlag;
+    BYTE bUpperBaseAddress2;
+} GDTENTRY8;
+
+// 16바이트 크기의 GDT 엔트리 구조
+typedef struct kGDTEntry16Struct {
+    WORD wLowerLimit;
+    WORD wLowerBaseAddress;
+    BYTE bMiddleBaseAddress1;
+    // 4비트 Type, 1비트 0, 2비트 DPL, 1비트 P
+    BYTE bTypeAndLowerFlag;
+    // 4비트 Segment Limit, 1bit AVL, 0, 0, G
+    BYTE bUpperLimitAndUpperFlag;
+    BYTE bMiddleBaseAddress2;
+    DWORD dwUpperBaseAddress;
+    DWORD dwReserved;
+} GDTENTRY16;
+
+// TSS Data 구조체
+typedef struct kTSSDataStruct {
+    DWORD dwReserved1;
+    QWORD qwRsp[3];
+    QWORD qwReserved2;
+    QWORD qwIST[7];
+    QWORD qwReserved3;
+    WORD wReserved;
+    WORD wIOMapBaseAddress;
+} TSSSEGMENT;
+
+#pragma pack (pop)
+
+
 #endif /*__DESCRIPTOR_H__*/
