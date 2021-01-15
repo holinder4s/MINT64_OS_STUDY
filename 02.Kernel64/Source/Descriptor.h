@@ -108,5 +108,6 @@ typedef struct kTSSDataStruct {
 void kInitializeGDTTableAndTSS(void);
 void kSetGDTEntry8(GDTENTRY8 *pstEntry, DWORD dwBaseAddress, DWORD dwLimit, BYTE bUpperFlags, BYTE bLowerFlags, BYTE bType);
 void kSetGDTEntry16(GDTENTRY16 *pstEntry, QWORD qwBaseAddress, DWORD dwLimit, BYTE bUpperFlags, BYTE bLowerFlags, BYTE bType);
+void kInitializeTSSSegment(TSSSEGMENT *pstTSS);
 
 #endif /*__DESCRIPTOR_H__*/
