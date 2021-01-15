@@ -99,5 +99,6 @@ typedef struct kTSSDataStruct {
 // 함수
 void kInitializeGDTTableAndTSS(void);
 void kSetGDTEntry8(GDTENTRY8 *pstEntry, DWORD dwBaseAddress, DWORD dwLimit, BYTE bUpperFlags, BYTE bLowerFlags, BYTE bType);
+void kSetGDTEntry16(GDTENTRY16 *pstEntry, QWORD qwBaseAddress, DWORD dwLimit, BYTE bUpperFlags, BYTE bLowerFlags, BYTE bType);
 
 #endif /*__DESCRIPTOR_H__*/

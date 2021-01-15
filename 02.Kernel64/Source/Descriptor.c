@@ -39,3 +39,16 @@ void kSetGDTEntry8(GDTENTRY8 *pstEntry, DWORD dwBaseAddress, DWORD dwLimit, BYTE
     pstEntry->bUpperLimitAndUpperFlag = ((dwLimit >> 16) & 0x0F) | bUpperFlags;
     pstEntry->bUpperBaseAddress2 = (dwBaseAddress >> 24) & 0xFF;
 }
+
+// 16바이트 크기의 GDT 엔트리에 값을 설정
+// TSS 세그먼트 디스크립터를 설정하는데 사용
+void kSetGDTEntry16(GDTENTRY16 *pstEntry, QWORD qwBaseAddress, DWORD dwLimit, BYTE bUpperFlags, BYTE bLowerFlags, BYTE bType) {
+    pstEntry->wLowerLimit = dwLimit & 0xFFFF;
+    pstEntry->wLowerBaseAddress = qwBaseAddress & 0xFFFF;
+    pstEntry->bMiddleBaseAddress1 = (qwBaseAddress >> 16) & 0xFF;
+    pstEntry->bTypeAndLowerFlag = bLowerFlags | bType;
+    pstEntry->bUpperLimitAndUpperFlag = ((dwLimit >> 16) & 0x0F) | bUpperFlags;
+    pstEntry->bMiddleBaseAddress2 = (qwBaseAddress >> 24) & 0xFF;
+    pstEntry->dwUpperBaseAddress = qwBaseAddress >> 32;
+    pstEntry->dwReserved = 0;
+}
