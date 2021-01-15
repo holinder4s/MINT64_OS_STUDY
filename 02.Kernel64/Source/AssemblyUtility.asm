@@ -37,3 +37,9 @@ kOutPortByte:
 kLoadGDTR:
     lgdt [rdi]      ; 파라미터 1(GDTR의 어드레스)를 프로세서에 로드하여 GDT 테이블을 설정
     ret
+
+; TR 레지스터에 TSS 세그먼트 디스크립터 설정
+;   PARAM: TSS 세그먼트 디스크립터의 오프셋
+kLoadTR:
+    ltr di          ; 파라미터 1(TSS 세그먼트 디스크립터의 오프셋)을 프로세서에 설정하여 TSS 세그먼트를 로드
+    ret
