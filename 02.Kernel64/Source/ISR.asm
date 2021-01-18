@@ -2,6 +2,14 @@
 
 SECTION .text       ; text 섹션(세그먼트)을 정의
 
+; C 언어에서 호출할 수 있도록 이름을 노출함(Export)
+; 예외(Exception) 처리를 위한 ISR
+global kISRDivideError, kISRDebug, kISRNMI, kISRBreakPoint, kISROverflow
+global kISRBoundRangeExceeded, kISRInvalidOpcode, kISRDeviceNotAvailable, kISRDoubleFault
+global kISRCoprocessorSegmentOverrun, kISRInvalidTSS, kISRSegmentNotPresent
+global kISRStackSegmentFault, kISRGeneralProtection, kISRPageFault, kISR15
+global kISRFPUError, kISRAlignmentCheck, kISRMachineCheck, kISRSIMDError, kISRETCException
+
 ; 콘텍스트를 저장하고 셀렉터를 교체하는 매크로
 %macro KSAVECONTEXT 0       ; 파라미터를 전달받지 않는 KSAVECONTEXT 매크로 정의
     ; RBP 레지스터부터 GS 세그먼트 셀렉터까지 모두 스택에 삽입
@@ -63,3 +71,251 @@ SECTION .text       ; text 섹션(세그먼트)을 정의
     pop rax
     pop rbp
 %endmacro           ; 매크로 끝
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 예외 핸들러
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; #0, Divide Error ISR
+kISRDivideError:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 0
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #1, Debug ISR
+kISRDebug:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 1
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #2, NMI ISR
+kISRNMI:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 2
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #3, BreakPoint ISR
+kISRBreakPoint:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 3
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #4, Overflow ISR
+kISROverflow:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 4
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #5, Bound Range Exceeded ISR
+kISRBoundRangeExceeded:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 5
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #6, Invalid Opcode ISR
+kISRInvalidOpcode:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 6
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #7, Device Not Available ISR
+kISRDeviceNotAvailable:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 7
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #8, Double Fault ISR
+kISRDoubleFault:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 8
+    mov rsi, qword [rbp+8]
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    add rsp, 8      ; 에러 코드를 스택에서 제거
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #9, Coprocessor Segment Overrun ISR
+kISRCoprocessorSegmentOverrun:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 9
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #10, Invalid TSS ISR
+kISRInvalidTSS:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 10
+    mov rsi, qword [rbp+8]
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    add rsp, 8      ; 에러 코드를 스택에서 제거
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #11, Segment Not Present ISR
+kISRSegmentNotPresent:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 11
+    mov rsi, qword [rbp+8]
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    add rsp, 8      ; 에러 코드를 스택에서 제거
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #12, Stack Segment Fault ISR
+kISRStackSegmentFault:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 12
+    mov rsi, qword [rbp+8]
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    add rsp, 8      ; 에러 코드를 스택에서 제거
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #13, General Protection ISR
+kISRGeneralProtection:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 13
+    mov rsi, qword [rbp+8]
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    add rsp, 8      ; 에러 코드를 스택에서 제거
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #14, Page Fault ISR
+kISRPageFault:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 14
+    mov rsi, qword [rbp+8]
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    add rsp, 8      ; 에러 코드를 스택에서 제거
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #15, Reserved ISR
+kISR15:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 15
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #16, FPU Error ISR
+kISRFPUError:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 16
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #17, Alignment Check ISR
+kISRAlignmentCheck:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 17
+    mov rsi, qword [rbp+8]
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    add rsp, 8      ; 에러 코드를 스택에서 제거
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #18, Machine Check ISR
+kISRMachineCheck:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 18
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #19, SIMD Floating Point Exception ISR
+kISRSIMDError:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 19
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
+
+; #20~31, Reserved ISR
+kISRETCException:
+    KSAVECONTEXT    ; 콘텍스트를 저장한 뒤 셀렉터를 커널 데이터 디스크립터로 교체
+
+    ; 핸들러에 예외 번호를 삽입하고 핸들러 호출
+    mov rdi, 20
+    call kCommonExceptionHandler
+
+    KLOADCONTEXT    ; 콘텍스트를 복원
+    iretq           ; 인터럽트 처리를 완료하고 이전에 수행하던 코드로 복원
