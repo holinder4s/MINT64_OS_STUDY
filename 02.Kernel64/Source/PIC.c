@@ -30,3 +30,14 @@ void kInitializePIC(void) {
     // ICW4(포트 0xA1), uPM 비트(비트 0) = 1
     kOutPortByte(PIC_SLAVE_PORT2, 0x01);
 }
+
+// 인터럽트를 마스크하여 해당 인터럽트가 발생하지 않게 처리
+void kMaskPICInterrupt(WORD wIRQBitmask) {
+    // 마스터 PIC 컨트롤러에 IMR 설정
+    // OCW1(포트 0x21), IRQ0~IRQ7
+    kOutPortByte(PIC_MASTER_PORT2, (BYTE)wIRQBitmask);
+
+    // 슬레이브 PIC 컨트롤러에 IMR 설정
+    // OCW1(포트 0xA1), IRQ8~IRQ15
+    kOutPortByte(PIC_SLAVE_PORT2, (BYTE)(wIRQBitmask >> 8));
+}

@@ -15,5 +15,6 @@
 
 // 함수
 void kInitializePIC(void);
+void kMaskPICInterrupt(WORD wIRQBitmask);
 
 #endif /*__PIC_H__*/
