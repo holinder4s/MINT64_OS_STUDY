@@ -5,5 +5,6 @@
 
 // 함수
 void kCommonExceptionHandler(int iVectorNumber, QWORD qwErrorCode);
+void kCommonInterruptHandler(int iVectorNumber);
 
 #endif /*__INTERRUPTHANDLER_H__*/
