@@ -41,3 +41,18 @@ void kMaskPICInterrupt(WORD wIRQBitmask) {
     // OCW1(포트 0xA1), IRQ8~IRQ15
     kOutPortByte(PIC_SLAVE_PORT2, (BYTE)(wIRQBitmask >> 8));
 }
+
+// 인터럽트 처리가 완료되었음을 전송(EOI)
+//      마스터 PIC 컨트롤러의 경우, 마스터 PIC 컨트롤러에만 EOI 전송
+//      슬레이브 PIC 컨트롤러의 경우, 마스터 및 슬레이브 PIC 컨트롤러에게도 EOI 전송
+void kSendEOIToPIC(int iIRQNumber) {
+    // 마스터 PIC 컨트롤러에 EOI 전송
+    // OCW2(포트 0x20), EOI 비트(비트 5) = 1
+    kOutPortByte(PIC_MASTER_PORT1, 0x20);
+
+    // 슬레이브 PIC 컨트롤러의 인터럽트인 경우 슬레이브 PIC 컨트롤러에게도 EOI 전송
+    if(iIRQNumber >= 8) {
+        // OCW2(포트 0xA0), EOI 비트(비트 5) = 1
+        kOutPortByte(PIC_SLAVE_PORT1, 0x20);
+    }
+}
