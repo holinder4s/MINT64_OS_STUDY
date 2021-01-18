@@ -36,3 +36,30 @@ SECTION .text       ; text 섹션(세그먼트)을 정의
     mov gs, ax
     mov fs, ax
 %endmacro           ; 매크로 끝
+
+; 콘텍스트를 복원하는 매크로
+%macro KLOADCONTEXT 0       ; 파라미터를 전달받지 않는 KLOADCONTEXT 매크로 정의
+    ; GS 세그먼트 셀렉터부터 RBP 레지스터까지 모두 스택에서 꺼내 복원
+    pop gs
+    pop fs
+    pop rax
+    mov es, ax      ; ES 세그먼트 셀렉터와 DS 세그먼트 셀렉터는 스택에서 직접 꺼내 복원할 수 없으므로, RAX 레지스터에 저장한 뒤에 복원
+    pop rax
+    mov ds, ax
+
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rsi
+    pop rdi
+    pop rdx
+    pop rcx
+    pop rbx
+    pop rax
+    pop rbp
+%endmacro           ; 매크로 끝
