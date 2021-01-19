@@ -24,4 +24,7 @@ typedef struct kQueueManagerStruct {
 
 #pragma pack(pop)
 
+// 함수
+void kInitializeQueue(QUEUE *pstQueue, void *pvQueueBuffer, int iMaxDataCount, int iDataSize);
+
 #endif /*__QUEUE_H__*/
