@@ -26,10 +26,46 @@ BOOL kIsInputBufferFull(void) {
     return FALSE;
 }
 
+// ACK를 기다림
+//      ACK가 아닌 다른 스캔 코드는 변환해서 큐에 삽입
+BOOL kWaitForACKAndPutOtherScanCode(void) {
+    int i, j;
+    BYTE bData;
+    BYTE bResult = FALSE;
+
+    // ACK가 오기 전에는 키보드 출력 버퍼(포트 0x60)에 키 데이터가 저장되어 있을 수 있으므로
+    // 키보드에서 전달된 데이터를 최대 100개까지 수신하여 ACK를 확인
+    for(j=0; j<100; j++) {
+        // 0xFFFF만큼 루프를 수행할 시간이면 충분히 커맨드의 응답이 올 수 있음
+        // 0xFFFF 루프를 수행한 이후에도 출력 버퍼(포트 0x60)가 차 있지 않으면 무시하고 읽음
+        for(i=0; i<0xFFFF; i++) {
+            // 출력 버퍼(포트 0x60)가 차있으면 데이터를 읽을 수 있음
+            if(kIsOutputBufferFull() == TRUE) {
+                break;
+            }
+        }
+        // 출력 버퍼(포트 0x60)에서 읽은 데이터가 ACK(0xFA)이면 성공
+        bData = kInPortByte(0x60);
+        if(bData == 0xFA) {
+            bResult = TRUE;
+            break;
+        }
+        // ACK(0xFA)가 아니면 ASCII 코드로 변환하여 키 큐에 삽입
+        else {
+            kConvertScanCodeAndPutQueue(bData);
+        }
+    }
+    return bResult;
+}
+
 // 키보드를 활성화
 BOOL kActivateKeyboard(void) {
-    int i;
-    int j;
+    int i, j;
+    BOOL bPreviousInterrupt;
+    BOOL bResult;
+
+    // 인터럽트 불가
+    bPreviousInterrupt = kSetInterruptFlag(FALSE);
 
     // 컨트롤 레지스터(포트 0x64)에 키보드 활성화 커맨드(0xAE)를 전달하여 키보드 컨트롤러에 키보드 디바이스 활성화
     kOutPortByte(0x64, 0xAE);
@@ -47,22 +83,11 @@ BOOL kActivateKeyboard(void) {
     kOutPortByte(0x60, 0xF4);
 
     // ACK가 올 때까지 대기함
-    // ACK가 오기 전에는 키보드 출력 버퍼(포트 0x60)에 키 데이터가 저장되어 있을 수 있으므로
-    // 키보드에서 전달된 데이터를 최대 100개까지 수신하여 ACK를 확인
-    for(j=0; j<100; j++) {
-        // 0xFFFF만큼 루프를 수행할 시간이면 충분히 커맨드의 응답이 올 수 있음
-        // 0xFFFF 루프를 수행한 이후에도 출력 버퍼(포트 0x60)가 차 있지 않으면 무시하고 읽음
-        for(i=0; i<0xFFFF; i++) {
-            // 출력 버퍼(포트 0x60)가 차있으면 데이터를 읽을 수 있음
-            if(kIsOutputBufferFull() == TRUE) {
-                break;
-            }
-        }
-        // 출력 버퍼(포트 0x60)에서 읽은 데이터가 ACK(0xFA)이면 성공
-        if(kInPortByte(0x60) == 0xFA) {
-            return TRUE;
-        }
-    }
+    bResult = kWaitForACKAndPutOtherScanCode();
+
+    // 이전 인터럽트 상태 복원
+    kSetInterruptFlag(bPreviousInterrupt);
+    return bResult;
 
     return FALSE;
 }

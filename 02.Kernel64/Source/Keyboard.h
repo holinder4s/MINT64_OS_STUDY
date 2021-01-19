@@ -96,6 +96,7 @@ typedef struct kKeyDataStruct {
 // 함수
 BOOL kIsOutputBufferFull(void);
 BOOL kIsInputBufferFull(void);
+BOOL kWaitForACKAndPutOtherScanCode(void);
 BOOL kActivateKeyboard(void);
 BYTE kGetKeyboardScanCode(void);
 BOOL kChangeKeyboardLED(BOOL bCapsLockOn, BOOL bNumLockOn, BOOL bScrollLockOn);
@@ -108,5 +109,6 @@ BOOL kIsUseCombinedCode(BYTE bScanCode);
 void UpdateCombinationKeyStatusAndLED(BYTE bScanCode);
 BOOL IsPrintableASCIICode(BYTE bScanCode);
 BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE *pbASCIICode, BOOL *pbFlags);
+BOOL kInitializeKeyboard(void);
 
 #endif /*__KEYBOARD_H__*/
