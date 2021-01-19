@@ -519,3 +519,26 @@ BOOL kInitializeKeyboard(void) {
     // 키보드 활성화
     return kActivateKeyboard();
 }
+
+// 스캔 코드를 내부적으로 사용하는 키 데이터로 바꾼 후 키 큐에 삽입
+BOOL kConvertScanCodeAndPutQueue(BYTE bScanCode) {
+    KEYDATA stData;
+    BOOL bResult = FALSE;
+    BOOL bPreviousInterrupt;
+
+    // 스캔 코드를 키 데이터에 삽입
+    stData.bScanCode = bScanCode;
+
+    // 스캔 코드를 ASCII 코드와 키 상태로 변환하여 키 데이터에 삽입
+    if(kConvertScanCodeToASCIICode(bScanCode, &(stData.bASCIICode), &(stData.bFlags)) == TRUE) {
+        // 인터럽트 불가
+        bPreviousInterrupt = kSetInterruptFlag(FALSE);
+
+        // 키 큐에 삽입
+        bResult = kPutQueue(&gs_stKeyQueue, &stData);
+
+        // 이전 인터럽트 플래그 복원
+        kSetInterruptFlag(bPreviousInterrupt);
+    }
+    return bResult;
+}
