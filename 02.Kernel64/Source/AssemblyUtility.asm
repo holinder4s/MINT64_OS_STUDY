@@ -4,6 +4,7 @@ SECTION .text       ; text 섹션(세그먼트)을 정의
 
 ; C언어에서 호출할 수 있도록 이름을 노출함
 global kInPortByte, kOutPortByte, kLoadGDTR, kLoadTR, kLoadIDTR
+global kEnableInterrupt
 
 ; 포트로부터 1바이트를 읽음
 ;   PARAM: 포트 번호
@@ -48,4 +49,10 @@ kLoadTR:
 ;   PARAM: IDT 테이블의 정보를 저장하는 자료구조의 어드레스
 kLoadIDTR:
     lidt [rdi]      ; 파라미터 1(IDTR의 어드레스)을 프로세서에 로드하여 IDT 테이블을 설정
+    ret
+
+; 인터럽트를 활성화
+;   PARAM: 없음
+kEnableInterrupt:
+    sti             ; 인터럽트를 활성화
     ret
