@@ -111,5 +111,6 @@ BOOL IsPrintableASCIICode(BYTE bScanCode);
 BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE *pbASCIICode, BOOL *pbFlags);
 BOOL kInitializeKeyboard(void);
 BOOL kConvertScanCodeAndPutQueue(BYTE bScanCode);
+BOOL kGetKeyFromKeyQueue(KEYDATA *pstData);
 
 #endif /*__KEYBOARD_H__*/

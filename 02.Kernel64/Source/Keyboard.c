@@ -526,3 +526,25 @@ BOOL kConvertScanCodeAndPutQueue(BYTE bScanCode) {
     }
     return bResult;
 }
+
+// 키 큐에서 키 데이터를 제거
+BOOL kGetKeyFromKeyQueue(KEYDATA *pstData) {
+    BOOL bResult;
+    BOOL bPreviousInterrupt;
+
+    // 큐가 비었으면 키 데이터를 꺼낼 수 없음
+    if(kIsQueueEmpty(&gs_stKeyQueue) == TRUE) {
+        return FALSE;
+    }
+
+    // 인터럽트 불가
+    bPreviousInterrupt = kSetInterruptFlag(FALSE);
+
+    // 키 큐에서 키 데이터를 제거
+    bResult = kGetQueue(&gs_stKeyQueue, pstData);
+
+    // 이전 인터럽트 플래그 복원
+    kSetInterruptFlag(bPreviousInterrupt);
+
+    return bResult;
+}
