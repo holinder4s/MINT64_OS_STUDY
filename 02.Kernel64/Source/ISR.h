@@ -22,6 +22,7 @@ void kISR15(void);
 void kISRFPUError(void);
 void kISRAlignmentCheck(void);
 void kISRMachineCheck(void);
+void kISRSIMDError(void);
 void kISRETCException(void);
 
 // 인터럽트(Interrupt) 처리용 ISR
