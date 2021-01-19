@@ -23,6 +23,14 @@ BOOL kQueueFull(const QUEUE *pstQueue) {
     return FALSE;
 }
 
+// 큐가 비었는지 여부를 확인
+BOOL kIsQueueEmpty(const QUEUE *pstQueue) {
+    if((pstQueue->iGetIndex == pstQueue->iPutIndex) && (pstQueue->bLastOperationPut == FALSE)) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 // 큐에 데이터를 삽입
 BOOL kPutQueue(QUEUE *pstQueue, const void *pvData) {
     // 큐가 가득 찼으면 삽입할 수 없음
