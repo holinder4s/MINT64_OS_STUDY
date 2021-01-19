@@ -53,6 +53,9 @@
 #define KEY_F12         0x9F
 #define KEY_PAUSE       0xA0
 
+// 키 큐의 최대 크기
+#define KEY_MAXQUEUECOUNT   100
+
 // 구조체
 #pragma pack(push, 1)
 
@@ -64,8 +67,6 @@ typedef struct kKeyMappingEntryStruct {
     // Shift 키나 Caps Lock 키와 조합된 ASCII 코드
     BYTE bCombinedCode;
 } KEYMAPPINGENTRY;
-
-#pragma pack(pop)
 
 // 키보드의 상태를 관리하는 자료구조
 typedef struct kKeyboardManagerStruct {
@@ -79,6 +80,18 @@ typedef struct kKeyboardManagerStruct {
     BOOL bExtendedCodeIn;
     int iSkipCountForPause;
 } KEYBOARDMANAGER;
+
+// 키 큐에 삽입할 데이터 구조체
+typedef struct kKeyDataStruct {
+    // 키보드에서 전달된 스캔 코드
+    BYTE bScanCode;
+    // 스캔 코드를 변환한 ASCII 코드
+    BYTE bASCIICode;
+    // 키 상태를 저장하는 플래그(눌림/떨어짐/확장 키 여부)
+    BYTE bFlags;
+} KEYDATA;
+
+#pragma pack(pop)
 
 // 함수
 BOOL kIsOutputBufferFull(void);

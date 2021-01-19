@@ -1,6 +1,7 @@
 #include "Types.h"
 #include "AssemblyUtility.h"
 #include "Keyboard.h"
+#include "Queue.h"
 
 ///////////////////////////////////////////////////////////
 // 키보드 컨트롤러와 키보드 제어에 관련된 함수
@@ -208,6 +209,10 @@ void kReboot(void) {
 ///////////////////////////////////////////////////////////
 // 키보드 상태를 관리하는 키보드 매니저
 static KEYBOARDMANAGER gs_stKeyboardManager = {0, };
+
+// 키를 저장하는 큐와 버퍼 정의
+static QUEUE gs_stKeyQueue;
+static KEYDATA gs_vstKeyQueueBuffer[KEY_MAXQUEUECOUNT];
 
 // 스캔 코드를 ASCII 코드로 변환하는 테이블
 static KEYMAPPINGENTRY gs_vstKeyMappingTable[KEY_MAPPINGTABLEMAXCOUNT] = {
@@ -479,4 +484,13 @@ BOOL kConvertScanCodeToASCIICode(BYTE bScanCode, BYTE *pbASCIICode, BOOL *pbFlag
     }
 
     return TRUE;
+}
+
+// 키보드 초기화
+BOOL kInitializeKeyboard(void) {
+    // 큐 초기화
+    kInitializeQueue(&gs_stKeyQueue, gs_vstKeyQueueBuffer, KEY_MAXQUEUECOUNT, sizeof(KEYDATA));
+
+    // 키보드 활성화
+    return kActivateKeyboard();
 }
