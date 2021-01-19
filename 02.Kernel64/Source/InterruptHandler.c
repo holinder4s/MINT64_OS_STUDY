@@ -42,6 +42,7 @@ void kCommonInterruptHandler(int iVectorNumber) {
 void kKeyboardHandler(int iVectorNumber) {
     char vcBuffer[] = "[INT:  , ]";
     static int g_iCommonInterruptCount = 0;
+    BYTE bTemp;
 
     //=======================================================================
     // 인터럽트가 발생했음을 알리려고 메시지를 출력하는 부분
@@ -53,6 +54,12 @@ void kKeyboardHandler(int iVectorNumber) {
     g_iCommonInterruptCount = (g_iCommonInterruptCount + 1) % 10;
     kPrintString(0, 0, vcBuffer);
     //=======================================================================
+
+    // 키보드 컨트롤러에서 데이터를 읽어서 ASCII로 변환하여 큐에 삽입
+    if(kIsOutputBufferFull() == TRUE) {
+        bTemp = kGetKeyboardScanCode();
+        kConvertScanCodeAndPutQueue(bTemp);
+    }
 
     // EOI 전송
     kSendEOIToPIC(iVectorNumber - PIC_IRQSTARTVECTOR);
