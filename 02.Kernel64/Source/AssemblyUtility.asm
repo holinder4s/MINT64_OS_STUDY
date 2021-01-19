@@ -4,7 +4,7 @@ SECTION .text       ; text 섹션(세그먼트)을 정의
 
 ; C언어에서 호출할 수 있도록 이름을 노출함
 global kInPortByte, kOutPortByte, kLoadGDTR, kLoadTR, kLoadIDTR
-global kEnableInterrupt, kDisableInterrupt
+global kEnableInterrupt, kDisableInterrupt, kReadRFLAGS
 
 ; 포트로부터 1바이트를 읽음
 ;   PARAM: 포트 번호
@@ -61,4 +61,11 @@ kEnableInterrupt:
 ;   PARAM: 없음
 kDisableInterrupt:
     cli             ; 인터럽트를 비활성화
+    ret
+
+; RFLAGS 레지스터를 읽어서 되돌려줌
+;   PARAM: 없음
+kReadRFLAGS:
+    pushfq          ; RFLAGS 레지스터를 스택에 저장
+    pop rax         ; 스택에 저장된 RFLAGS 레지스터를 RAX 레지스터에 저장하여 함수의 반환 값으로 설정
     ret
