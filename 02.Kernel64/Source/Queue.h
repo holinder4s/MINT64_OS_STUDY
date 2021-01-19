@@ -26,5 +26,6 @@ typedef struct kQueueManagerStruct {
 
 // 함수
 void kInitializeQueue(QUEUE *pstQueue, void *pvQueueBuffer, int iMaxDataCount, int iDataSize);
+BOOL kPutQueue(QUEUE *pstQueue, const void *pvData);
 
 #endif /*__QUEUE_H__*/
