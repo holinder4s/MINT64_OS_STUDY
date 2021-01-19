@@ -51,7 +51,7 @@ void kKeyboardHandler(int iVectorNumber) {
     // 발생한 횟수 출력
     vcBuffer[8] = '0' + g_iCommonInterruptCount;
     g_iCommonInterruptCount = (g_iCommonInterruptCount + 1) % 10;
-    kPrintString(70, 0, vcBuffer);
+    kPrintString(0, 0, vcBuffer);
     //=======================================================================
 
     // EOI 전송
