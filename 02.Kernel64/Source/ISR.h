@@ -33,7 +33,7 @@ void kISRSerial2(void);
 void kISRSerial1(void);
 void kISRParallel2(void);
 void kISRFloppy(void);
-void kISRPallel1(void);
+void kISRParallel1(void);
 void kISRRTC(void);
 void kISRReserved(void);
 void kISRNotUsed1(void);
