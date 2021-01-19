@@ -4,7 +4,7 @@ SECTION .text       ; text 섹션(세그먼트)을 정의
 
 ; C언어에서 호출할 수 있도록 이름을 노출함
 global kInPortByte, kOutPortByte, kLoadGDTR, kLoadTR, kLoadIDTR
-global kEnableInterrupt
+global kEnableInterrupt, kDisableInterrupt
 
 ; 포트로부터 1바이트를 읽음
 ;   PARAM: 포트 번호
@@ -55,4 +55,10 @@ kLoadIDTR:
 ;   PARAM: 없음
 kEnableInterrupt:
     sti             ; 인터럽트를 활성화
+    ret
+
+; 인터럽트를 비활성화
+;   PARAM: 없음
+kDisableInterrupt:
+    cli             ; 인터럽트를 비활성화
     ret
