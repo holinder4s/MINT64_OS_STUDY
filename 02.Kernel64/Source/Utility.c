@@ -263,6 +263,19 @@ void kReverseString(char *pcBuffer) {
     }
 }
 
+// sprintf()함수의 내부 구현
+int kSprintf(char *pcBuffer, const char *pcFormatString, ...) {
+    va_list ap;
+    int iReturn;
+
+    // 가변 인자를 꺼내서 vsprintf()함수에 넘겨줌
+    va_start(ap, pcFormatString);
+    iReturn = kVSPrintf(pcBuffer, pcFormatString, ap);
+    va_end(ap);
+
+    return iReturn;
+}
+
 // vsprintf() 함수의 내부 구현
 //      버퍼에 포맷 문자열에 따라 데이터를 복사
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap) {

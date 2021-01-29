@@ -19,6 +19,7 @@ int kIToA(long lValue, char *pcBuffer, int iRadix);
 int kHexToString(QWORD qwValue, char *pcBuffer);
 int kDecimalToString(long lValue, char *pcBuffer);
 void kReverseString(char *pcBuffer);
+int kSprintf(char *pcBuffer, const char *pcFormatString, ...);
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap);
 
 #endif /*__UTILITY_H__*/
