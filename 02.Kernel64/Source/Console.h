@@ -58,6 +58,7 @@ typedef struct kConsoleManagerStruct {
 #pragma pack(pop)
 
 // 함수
+void kInitializeConsole(int iX, int iY);
 void kSetCursor(int iX, int iY);
 void kGetCursor(int *piX, int *piY);
 void kPrintf(const char *pcFormatString, ...);

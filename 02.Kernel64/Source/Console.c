@@ -6,6 +6,15 @@
 // 콘솔의 정보를 관리하는 자료구조
 CONSOLEMANAGER gs_stConsoleManager = {0, };
 
+// 콘솔 초기화
+void kInitializeConsole(int iX, int iY) {
+    // 자료구조를 모두 0으로 초기화
+    kMemSet(&gs_stConsoleManager, 0, sizeof(gs_stConsoleManager));
+
+    // 커서 위치 설정
+    kSetCursor(iX, iY);
+}
+
 // 커서의 위치를 설정
 // 문자를 출력할 위치도 같이 설정
 void kSetCursor(int iX, int iY) {
