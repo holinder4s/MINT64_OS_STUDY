@@ -55,6 +55,18 @@ BOOL kSetInterruptFlag(BOOL bEnableInterrupt) {
     return FALSE;
 }
 
+// 문자열의 길이를 반환
+int kStrLen(const char *pcBuffer) {
+    int i;
+
+    for(i=0; ; i++) {
+        if(pcBuffer[i] == '\0') {
+            break;
+        }
+    }
+    return i;
+}
+
 // vsprintf() 함수의 내부 구현
 //      버퍼에 포맷 문자열에 따라 데이터를 복사
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap) {
