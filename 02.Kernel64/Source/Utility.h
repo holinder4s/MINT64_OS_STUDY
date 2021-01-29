@@ -12,6 +12,7 @@ BOOL kSetInterruptFlag(BOOL bEnableInterrupt);
 int kStrLen(const char *pcBuffer);
 int kIToA(long lValue, char *pcBuffer, int iRadix);
 int kDecimalToString(long lValue, char *pcBuffer);
+void kReverseString(char *pcBuffer);
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap);
 
 #endif /*__UTILITY_H__*/

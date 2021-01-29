@@ -123,6 +123,21 @@ int kDecimalToString(long lValue, char *pcBuffer) {
     return i;
 }
 
+// 문자열의 순서를 뒤집음
+void kReverseString(char *pcBuffer) {
+    int iLength;
+    int i;
+    char cTemp;
+
+    // 문자열의 가운데를 중심으로 좌/우를 바꿔서 순서를 뒤집음
+    iLength = kStrLen(pcBuffer);
+    for(i=0; i<iLength/2; i++) {
+        cTemp = pcBuffer[i];
+        pcBuffer[i] = pcBuffer[iLength - 1 - i];
+        pcBuffer[iLength - 1 - i] = cTemp;
+    }
+}
+
 // vsprintf() 함수의 내부 구현
 //      버퍼에 포맷 문자열에 따라 데이터를 복사
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap) {
