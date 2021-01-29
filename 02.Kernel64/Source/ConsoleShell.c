@@ -134,3 +134,10 @@ void kHelp(const char *pcCommandBuffer) {
         printf("  - %s\n", gs_vstCommandTable[i].pcHelp);
     }
 }
+
+// 화면을 지움
+void kCls(const char *pcParameterBuffer) {
+    // 맨 윗줄은 디버깅 용으로 사용하므로 화면을 지운 후 라인 1로 커서 이동
+    kClearScreen();
+    kSetCursor(0, 1);
+}
