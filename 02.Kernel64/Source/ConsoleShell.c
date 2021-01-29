@@ -3,6 +3,15 @@
 #include "Keyboard.h"
 #include "Utility.h"
 
+// 커맨드 테이블 정의
+SHELLCOMMANDENTRY gs_vstCommandTable[] = {
+    {"help", "Show Help", kHelp},
+    {"cls", "Clear Screen", kCls},
+    {"totalram", "Show Total RAM Size", kShowTotalRAMSize},
+    {"strtod", "String To Decimal/Hex Convert", kStringToDecimalHexTest},
+    {"shutdown", "Shutdown And Reboot OS", kShutdown},
+};
+
 //=========================================================================
 // 실제 쉘을 구성하는 코드
 //=========================================================================
