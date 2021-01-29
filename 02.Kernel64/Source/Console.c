@@ -23,6 +23,9 @@ void kSetCursor(int iX, int iY) {
     kOutPortByte(VGA_PORT_INDEX, VGA_INDEX_LOWERCURSOR);
     // CRTC 컨트롤 데이터 레지스터(포트 0x3D5)에 커서의 하위 바이트를 출력
     kOutPortByte(VGA_PORT_DATA, iLinearValue & 0xFF);
+
+    // 문자를 출력할 위치 업데이트
+    gs_stConsoleManager.iCurrentPrintOffset = iLinearValue;
 }
 
 // 현재 커서의 위치를 반환
