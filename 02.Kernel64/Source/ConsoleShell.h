@@ -40,6 +40,7 @@ typedef struct kParameterListStruct {
 // 실제 쉘 코드
 void kStartConsoleShell(void);
 void kExecuteCommand(const char *pcCommandBuffer);
+void kInitializeParameter(PARAMETERLIST *pstList, const char *pcParameter);
 
 // 커맨드를 처리하는 함수
 void kHelp(const char *pcCommandBuffer);

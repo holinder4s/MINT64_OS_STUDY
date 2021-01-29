@@ -102,6 +102,13 @@ void kExecuteCommand(const char *pcCommandBuffer) {
     }
 }
 
+// 파라미터 자료구조를 초기화
+void kInitializeParameter(PARAMETERLIST *pstList, const char *pcParameter) {
+    pstList->pcBuffer = pcParameter;
+    pstList->iLength = kStrLen(pcParameter);
+    pstList->iCurrentPosition = 0;
+}
+
 //=========================================================================
 // 커맨드를 처리하는 코드
 //=========================================================================
