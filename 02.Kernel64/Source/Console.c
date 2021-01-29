@@ -104,6 +104,21 @@ int kConsolePrintString(const char *pcBuffer) {
     return iPrintOffset;
 }
 
+// 전체 화면을 삭제
+void kClearScreen(void) {
+    CHARACTER *pstScreen = (CHARACTER *)CONSOLE_VIDEOMEMORYADDRESS;
+    int i;
+
+    // 화면 전체를 공백으로 채우고 커서의 위치를 0, 0으로 옮김
+    for(i=0; i<CONSOLE_WIDTH * CONSOLE_HEIGHT; i++) {
+        pstScreen[i].bCharactor = ' ';
+        pstScreen[i].bAttribute = CONSOLE_DEFAULTTEXTCOLOR;
+    }
+
+    // 커서를 화면 상단으로 이동
+    kSetCursor(0, 0);
+}
+
 // getch() 함수의 구현
 BYTE kGetCh(void) {
     KEYDATA stData;
