@@ -41,6 +41,7 @@ typedef struct kParameterListStruct {
 void kStartConsoleShell(void);
 void kExecuteCommand(const char *pcCommandBuffer);
 void kInitializeParameter(PARAMETERLIST *pstList, const char *pcParameter);
+int kGetNextParameter(PARAMETERLIST *pstList, char *pcParameter);
 
 // 커맨드를 처리하는 함수
 void kHelp(const char *pcCommandBuffer);

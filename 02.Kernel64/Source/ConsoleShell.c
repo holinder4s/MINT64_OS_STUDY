@@ -109,6 +109,33 @@ void kInitializeParameter(PARAMETERLIST *pstList, const char *pcParameter) {
     pstList->iCurrentPosition = 0;
 }
 
+// 공백으로 구분된 파라미터의 내용과 길이를 반환
+int kGetNextParameter(PARAMETERLIST *pstList, char *pcParameter) {
+    int i;
+    int iLength;
+
+    // 더 이상 파라미터가 없으면 나감
+    if(pstList->iLength <= pstList->iCurrentPosition) {
+        return 0;
+    }
+
+    // 버퍼의 길이만큼 이동하면서 공백을 검색
+    for(i=pstList->iCurrentPosition; i<pstList->iLength; i++) {
+        if(pstList->pcBuffer[i] == ' ') {
+            break;
+        }
+    }
+
+    // 파라미터를 복사하고 길이를 반환
+    kMemCpy(pcParameter, pstList->pcBuffer + pstList->iCurrentPosition, i);
+    iLength = i - pstList->iCurrentPosition;
+    pcParameter[iLength] = '\0';
+
+    // 파라미터의 위치 업데이트
+    pstList->iCurrentPosition += iLength + 1;
+    return iLength;
+}
+
 //=========================================================================
 // 커맨드를 처리하는 코드
 //=========================================================================
