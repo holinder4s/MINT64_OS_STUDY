@@ -141,3 +141,8 @@ void kCls(const char *pcParameterBuffer) {
     kClearScreen();
     kSetCursor(0, 1);
 }
+
+// 총 메모리 크기를 출력
+void kShowTotalRAMSize(const char *pcParameterBuffer) {
+    kPrintf("Total RAM Size = %d MB\n", kGetTotalRAMSize());
+}
