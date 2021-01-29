@@ -101,3 +101,36 @@ void kExecuteCommand(const char *pcCommandBuffer) {
         kPrintf("'%s' is not found.\n", pcCommandBuffer);
     }
 }
+
+//=========================================================================
+// 커맨드를 처리하는 코드
+//=========================================================================
+// 쉘 도움말을 출력
+void kHelp(const char *pcCommandBuffer) {
+    int i;
+    int iCount;
+    int iCursorX, iCursorY;
+    int iLength, iMaxCommandLength = 0;
+
+    kPrintf("=========================================================\n");
+    kPrintf("                     MINT64 Shell Help                   \n");
+    kPrintf("=========================================================\n");
+
+    iCount = sizeof(gs_vstCommandTable) / sizeof(SHELLCOMMANDENTRY);
+
+    // 가장 긴 커맨드의 길이를 계산
+    for(i=0; i<iCount; i++) {
+        iLength = kStrLen(gs_vstCommandTable[i].pcCommand);
+        if(iLength > iMaxCommandLength) {
+            iMaxCommandLength = iLength;
+        }
+    }
+
+    // 도움말 출력
+    for(i=0; i<iCount; i++) {
+        kPrintf("%s", gs_vstCommandTable[i].pcCommand);
+        kGetCursor(&iCursorX, &iCursorY);
+        kSetCursor(iMaxCommandLength, iCursorY);
+        printf("  - %s\n", gs_vstCommandTable[i].pcHelp);
+    }
+}
