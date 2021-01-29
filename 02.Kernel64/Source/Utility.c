@@ -67,6 +67,14 @@ int kStrLen(const char *pcBuffer) {
     return i;
 }
 
+// 램의 총 크기(MB 단위)
+static gs_qwTotalRAMMBSize = 0;
+
+// RAM 크기를 반환
+QWORD kGetTotalRAMSize(void) {
+    return gs_qwTotalRAMMBSize;
+}
+
 // atoi() 함수의 내부 구현
 long kAToI(const char *pcBuffer, int iRadix) {
     long lReturn;
