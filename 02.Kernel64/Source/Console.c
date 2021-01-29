@@ -103,3 +103,21 @@ int kConsolePrintString(const char *pcBuffer) {
     }
     return iPrintOffset;
 }
+
+// getch() 함수의 구현
+BYTE kGetCh(void) {
+    KEYDATA stData;
+
+    // 키가 눌러질 때까지 대기
+    while(1) {
+        // 키 큐에 데이터가 수신될 때까지 대기
+        while(kGetKeyFromKeyQueue(&stData) == FALSE) {
+            ;
+        }
+
+        // 키가 눌렸다는 데이터가 수신되면 ASCII 코드로 반환
+        if(stData.bFlags & KEY_FLAGS_DOWN) {
+            return stData.bASCIICode;
+        }
+    }
+}

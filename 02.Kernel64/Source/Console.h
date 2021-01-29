@@ -62,5 +62,6 @@ void kSetCursor(int iX, int iY);
 void kGetCursor(int *piX, int *piY);
 void kPrintf(const char *pcFormatString, ...);
 int kConsolePrintString(const char *pcBuffer);
+BYTE kGetCh(void);
 
 #endif /*__CONSOLE_H__*/
