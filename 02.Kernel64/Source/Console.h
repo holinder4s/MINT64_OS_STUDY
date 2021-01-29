@@ -59,6 +59,7 @@ typedef struct kConsoleManagerStruct {
 
 // 함수
 void kSetCursor(int iX, int iY);
+void kGetCursor(int *piX, int *piY);
 void kPrintf(const char *pcFormatString, ...);
 int kConsolePrintString(const char *pcBuffer);
 

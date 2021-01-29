@@ -25,6 +25,13 @@ void kSetCursor(int iX, int iY) {
     kOutPortByte(VGA_PORT_DATA, iLinearValue & 0xFF);
 }
 
+// 현재 커서의 위치를 반환
+void kGetCursor(int *piX, int *piY) {
+    // 저장된 위치를 콘솔 화면의 너비로 나눈 나머지로 X 좌표를 구할 수 있으며, 화면 너비로 나누면 Y좌표를 구할 수 있음
+    *piX = gs_stConsoleManager.iCurrentPrintOffset % CONSOLE_WIDTH;
+    *piY = gs_stConsoleManager.iCurrentPrintOffset / CONSOLE_WIDTH;
+}
+
 // printf 함수의 내부 구현
 void kPrintf(const char *pcFormatString, ...) {
     va_list ap;
