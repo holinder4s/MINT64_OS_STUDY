@@ -67,6 +67,24 @@ int kStrLen(const char *pcBuffer) {
     return i;
 }
 
+// itoa() 함수의 내부 구현
+int kIToA(long lValue, char *pcBuffer, int iRadix) {
+    int iReturn;
+
+    switch(iRadix) {
+    // 16진수
+    case 16:
+        iReturn = kHexToString(lValue, pcBuffer);
+        break;
+    // 10진수 또는 기타
+    case 10:
+    default:
+        iReturn = kDecimalToString(lValue, pcBuffer);
+        break;
+    }
+    return iReturn;
+}
+
 // vsprintf() 함수의 내부 구현
 //      버퍼에 포맷 문자열에 따라 데이터를 복사
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap) {
@@ -137,3 +155,4 @@ int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap) {
     pcBuffer[iBufferIndex] = '\0';
     return iBufferIndex;
 }
+

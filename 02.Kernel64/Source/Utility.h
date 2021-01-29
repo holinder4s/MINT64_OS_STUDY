@@ -10,6 +10,7 @@ int kMemCpy(void *pvDestination, const void *pvSource, int iSize);
 int kMemCmp(void *pvDestination, const void *pvSource, int iSize);
 BOOL kSetInterruptFlag(BOOL bEnableInterrupt);
 int kStrLen(const char *pcBuffer);
+int kIToA(long lValue, char *pcBuffer, int iRadix);
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap);
 
 #endif /*__UTILITY_H__*/
