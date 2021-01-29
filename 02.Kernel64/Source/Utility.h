@@ -10,6 +10,7 @@ int kMemCpy(void *pvDestination, const void *pvSource, int iSize);
 int kMemCmp(void *pvDestination, const void *pvSource, int iSize);
 BOOL kSetInterruptFlag(BOOL bEnableInterrupt);
 int kStrLen(const char *pcBuffer);
+void kCheckTotalRAMSize(void);
 QWORD kGetTotalRAMSize(void);
 long kAToI(const char *pcBuffer, int iRadix);
 QWORD kHexStringToQword(const char *pcBuffer);
