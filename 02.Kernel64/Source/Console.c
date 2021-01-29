@@ -121,3 +121,17 @@ BYTE kGetCh(void) {
         }
     }
 }
+
+// 문자열을 X, Y 위치에 출력
+void kPrintStringXY(int iX, int iY, const char *pcString) {
+    CHARACTER *pstScreen = (CHARACTER *)CONSOLE_VIDEOMEMORYADDRESS;
+    int i;
+
+    // 비디오 메모리 어드레스에서 현재 출력할 위치를 계산
+    pstScreen += (iY * CONSOLE_WIDTH) + iX;
+    // 문자열의 길이만큼 루프를 돌면서 문자와 속성을 저장
+    for(i=0; i<pcString[i] != 0; i++) {
+        pstScreen[i].bCharactor = pcString[i];
+        pstScreen[i].bAttribute = CONSOLE_DEFAULTTEXTCOLOR;
+    }
+}
