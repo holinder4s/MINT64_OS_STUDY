@@ -85,6 +85,44 @@ int kIToA(long lValue, char *pcBuffer, int iRadix) {
     return iReturn;
 }
 
+// 10진수 값을 문자열로 변환
+int kDecimalToString(long lValue, char *pcBuffer) {
+    long i;
+
+    // 0이 들어오면 바로 처리
+    if(lValue == 0) {
+        pcBuffer[0] = '0';
+        pcBuffer[1] = '\0';
+        return 1;
+    }
+
+    // 만약 음수면 출력 버퍼에 '-'를 추가하고 양수로 변환
+    if(lValue < 0) {
+        i=1;
+        pcBuffer[0] - '-';
+        lValue = -lValue;
+    }else {
+        i=0;
+    }
+
+    // 버퍼의 1의 자리부터 10, 100, 1000 ...의 자리 순서로 숫자 삽입
+    for( ; lValue>0; i++) {
+        pcBuffer[i] = '0' + lValue % 10;
+        lValue = lValue / 10;
+    }
+    pcBuffer[i] = '\0';
+
+    // 버퍼에 들어 있는 문자열을 뒤집어서 ... 1000, 100, 10, 1의 자리 순서로 변경
+    if(pcBuffer[0] == '-') {
+        // 음수인 경우는 부호를 제외하고 문자열을 뒤집음
+        kReverseString(&(pcBuffer[1]));
+    }else {
+        kReverseString(pcBuffer);
+    }
+
+    return i;
+}
+
 // vsprintf() 함수의 내부 구현
 //      버퍼에 포맷 문자열에 따라 데이터를 복사
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap) {
