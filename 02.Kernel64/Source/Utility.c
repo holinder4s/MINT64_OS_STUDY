@@ -85,6 +85,25 @@ long kAToI(const char *pcBuffer, int iRadix) {
     return lReturn;
 }
 
+// 16진수 문자열을 QWORD로 변환
+QWORD kHexStringToQword(const char *pcBuffer) {
+    QWORD qwValue = 0;
+    int i;
+
+    // 문자열을 돌면서 차례로 변환
+    for(i=0; pcBuffer[i] != '\0'; i++) {
+        qwValue *= 16;
+        if(('A' <= pcBuffer[i]) && (pcBuffer[i] <= 'Z')) {
+            qwValue += (pcBuffer[i] - 'A') + 10;
+        }else if(('a' <= pcBuffer[i]) && (pcBuffer[i] <= 'z')) {
+            qwValue += (pcBuffer[i] - 'a') + 10;
+        }else {
+            qwValue += pcBuffer[i] - '0';
+        }
+    }
+    return qwValue;
+}
+
 // 10진수 문자열을 long으로 변환
 long kDecimalStringToLong(const char *pcBuffer) {
     long lValue = 0;
