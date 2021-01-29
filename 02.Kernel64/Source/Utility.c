@@ -85,6 +85,31 @@ long kAToI(const char *pcBuffer, int iRadix) {
     return lReturn;
 }
 
+// 10진수 문자열을 long으로 변환
+long kDecimalStringToLong(const char *pcBuffer) {
+    long lValue = 0;
+    int i;
+
+    // 음수면 -를 제외하고 나머지를 먼저 long으로 변환
+    if(pcBuffer[0] == '-') {
+        i = 1;
+    }else {
+        i = 0;
+    }
+
+    // 문자열을 돌면서 차례로 변환
+    for( ; pcBuffer[i] != '\0'; i++) {
+        lValue *= 10;
+        lValue += pcBuffer[i] - '0';
+    }
+
+    // 음수면 -추가
+    if(pcBuffer[0] == '-') {
+        lValue = -lValue;
+    }
+    return lValue;
+}
+
 // itoa() 함수의 내부 구현
 int kIToA(long lValue, char *pcBuffer, int iRadix) {
     int iReturn;
