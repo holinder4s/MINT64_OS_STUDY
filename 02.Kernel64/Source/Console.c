@@ -6,6 +6,24 @@
 // 콘솔의 정보를 관리하는 자료구조
 CONSOLEMANAGER gs_stConsoleManager = {0, };
 
+// printf 함수의 내부 구현
+void kPrintf(const char *pcFormatString, ...) {
+    va_list ap;
+    char vcBuffer[1024];
+    int iNextPrintOffset;
+    
+    // 가변 인자 리스트를 사용해서 vsprintf()로 처리
+    va_start(ap, pcFormatString);
+    kVSPrintf(vcBuffer, pcFormatString, ap);
+    va_end(ap);
+
+    // 포맷 문자열을 화면에 출력
+    iNextPrintOffset = kConsolePrintString(vcBuffer);
+
+    // 커서의 위치를 업데이트
+    kSetCursor(iNextPrintOffset % CONSOLE_WIDTH, iNextPrintOffset / CONSOLE_WIDTH);
+}
+
 // \n, \t 같은 문자가 포함된 문자열을 출력한 후 화면상의 다음 출력할 위치를 반환
 int kConsolePrintString(const char *pcBuffer) {
     CHARACTER *pstScreen = (CHARACTER *)CONSOLE_VIDEOMEMORYADDRESS;

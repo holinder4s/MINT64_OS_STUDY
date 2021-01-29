@@ -52,6 +52,7 @@ typedef struct kConsoleManagerStruct {
 #pragma pack(pop)
 
 // 함수
+void kPrintf(const char *pcFormatString, ...);
 int kConsolePrintString(const char *pcBuffer);
 
 #endif /*__CONSOLE_H__*/
