@@ -3,6 +3,7 @@
 #include "Descriptor.h"
 #include "AssemblyUtility.h"
 #include "PIC.h"
+#include "Utility.h"
 #include "Console.h"
 #include "ConsoleShell.h"
 

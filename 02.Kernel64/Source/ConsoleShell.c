@@ -59,7 +59,7 @@ void kStartConsoleShell(void) {
         }else {
             // TAB은 공백으로 전환
             if(bKey == KEY_TAB) {
-                bKey = " ";
+                bKey = ' ';
             }
 
             // 버퍼에 공간이 남아 있을 때만 가능
@@ -165,7 +165,7 @@ void kHelp(const char *pcCommandBuffer) {
         kPrintf("%s", gs_vstCommandTable[i].pcCommand);
         kGetCursor(&iCursorX, &iCursorY);
         kSetCursor(iMaxCommandLength, iCursorY);
-        printf("  - %s\n", gs_vstCommandTable[i].pcHelp);
+        kPrintf("  - %s\n", gs_vstCommandTable[i].pcHelp);
     }
 }
 

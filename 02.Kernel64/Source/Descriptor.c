@@ -1,6 +1,7 @@
 #include "Descriptor.h"
 #include "Utility.h"
 #include "ISR.h"
+#include "Console.h"
 
 //===================================================================================
 // GDT 및 TSS
@@ -146,10 +147,10 @@ void kSetIDTEntry(IDTENTRY *pstEntry, void *pvHandler, WORD wSelector, BYTE bIST
 
 // 임시 예외 또는 인터럽트 핸들러
 void kDummyHandler(void) {
-    kPrintString(0, 0, "==================================================");
-    kPrintString(0, 1, "        Dummy Interrupt Handler Execute~!!!       ");
-    kPrintString(0, 2, "         Interrupt or Exception Occur~!!!         ");
-    kPrintString(0, 3, "==================================================");
+    kPrintStringXY(0, 0, "==================================================");
+    kPrintStringXY(0, 1, "        Dummy Interrupt Handler Execute~!!!       ");
+    kPrintStringXY(0, 2, "         Interrupt or Exception Occur~!!!         ");
+    kPrintStringXY(0, 3, "==================================================");
 
     while(1);
 }
