@@ -67,6 +67,24 @@ int kStrLen(const char *pcBuffer) {
     return i;
 }
 
+// atoi() 함수의 내부 구현
+long kAToI(const char *pcBuffer, int iRadix) {
+    long lReturn;
+
+    switch(iRadix) {
+    // 16진수
+    case 16:
+        lReturn = kHexStringToQword(pcBuffer);
+        break;
+    // 10진수 또는 기타
+    case 10:
+    default:
+        lReturn = kDecimalStringToLong(pcBuffer);
+        break;
+    }
+    return lReturn;
+}
+
 // itoa() 함수의 내부 구현
 int kIToA(long lValue, char *pcBuffer, int iRadix) {
     int iReturn;

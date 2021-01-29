@@ -10,6 +10,7 @@ int kMemCpy(void *pvDestination, const void *pvSource, int iSize);
 int kMemCmp(void *pvDestination, const void *pvSource, int iSize);
 BOOL kSetInterruptFlag(BOOL bEnableInterrupt);
 int kStrLen(const char *pcBuffer);
+long kAToI(const char *pcBuffer, int iRadix);
 int kIToA(long lValue, char *pcBuffer, int iRadix);
 int kHexToString(QWORD qwValue, char *pcBuffer);
 int kDecimalToString(long lValue, char *pcBuffer);
