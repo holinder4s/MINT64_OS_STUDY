@@ -39,6 +39,12 @@
 #define CONSOLE_HEIGHT              25
 #define CONSOLE_VIDEOMEMORYADDRESS  0xB8000
 
+// 비디오 컨트롤러의 I/O 포트 어드레스와 레지스터
+#define VGA_PORT_INDEX              0x3D4
+#define VGA_PORT_DATA               0x3D5
+#define VGA_INDEX_UPPERCURSOR       0x0E
+#define VGA_INDEX_LOWERCURSOR       0x0F
+
 // 구조체
 // 1바이트로 정렬
 #pragma pack(push, 1)
@@ -52,6 +58,7 @@ typedef struct kConsoleManagerStruct {
 #pragma pack(pop)
 
 // 함수
+void kSetCursor(int iX, int iY);
 void kPrintf(const char *pcFormatString, ...);
 int kConsolePrintString(const char *pcBuffer);
 
