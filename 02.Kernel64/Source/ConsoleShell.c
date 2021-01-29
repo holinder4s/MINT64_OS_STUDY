@@ -70,3 +70,34 @@ void kStartConsoleShell(void) {
         }
     }
 }
+
+// 커맨드 버퍼에 있는 커맨드를 비교하여 해당 커맨드를 처리하는 함수를 수행
+void kExecuteCommand(const char *pcCommandBuffer) {
+    int i, iSpaceIndex;
+    int iCommandBufferLength, iCommandLength;
+    int iCount;
+
+    // 공백으로 구분된 커맨드를 추출
+    iCommandBufferLength = kStrLen(pcCommandBuffer);
+    for(iSpaceIndex=0; iSpaceIndex<iCommandBufferLength; iSpaceIndex++) {
+        if(pcCommandBuffer[iSpaceIndex] == ' ') {
+            break;
+        }
+    }
+
+    // 커맨드 테이블을 검사해서 같은 이름의 커맨드가 있는지 확인
+    iCount = sizeof(gs_vstCommandTable) / sizeof(SHELLCOMMANDENTRY);
+    for(i=0; i<iCount; i++) {
+        iCommandLength = kStrLen(gs_vstCommandTable[i].pcCommand);
+        // 커맨드의 길이와 내용이 완전히 일치하는지 검사
+        if((iCommandLength == iSpaceIndex) && (kMemCmp(gs_vstCommandTable[i].pcCommand, pcCommandBuffer, iSpaceIndex) == 0)) {
+            gs_vstCommandTable[i].pfFunction(pcCommandBuffer + iSpaceIndex + 1);
+            break;
+        }
+    }
+
+    // 리스트에서 찾을 수 없다면 에러 출력
+    if(i >= iCount) {
+        kPrintf("'%s' is not found.\n", pcCommandBuffer);
+    }
+}

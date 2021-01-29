@@ -29,5 +29,6 @@ typedef struct kShellCommandEntryStruct {
 // 함수
 // 실제 쉘 코드
 void kStartConsoleShell(void);
+void kExecuteCommand(const char *pcCommandBuffer);
 
 #endif /*__CONSOLESHELL_H__*/
