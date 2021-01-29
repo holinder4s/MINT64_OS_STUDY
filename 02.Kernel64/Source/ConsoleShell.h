@@ -24,6 +24,16 @@ typedef struct kShellCommandEntryStruct {
     CommandFunction pfFunction;
 } SHELLCOMMANDENTRY;
 
+// 파라미터를 처리하기 위해 정보를 저장하는 자료구조
+typedef struct kParameterListStruct {
+    // 파라미터 버퍼의 어드레스
+    const char *pcBuffer;
+    // 파라미터의 길이
+    int iLength;
+    // 현재 처리할 파라미터가 시작하는 위치
+    int iCurrentPosition;
+} PARAMETERLIST;
+
 #pragma pack(pop)
 
 // 함수
@@ -35,5 +45,6 @@ void kExecuteCommand(const char *pcCommandBuffer);
 void kHelp(const char *pcCommandBuffer);
 void kCls(const char *pcParameterBuffer);
 void kShowTotalRAMSize(const char *pcParameterBuffer);
+void kStringToDecimalHexTest(const char *pcParameterBuffer);
 
 #endif /*__CONSOLESHELL_H__*/

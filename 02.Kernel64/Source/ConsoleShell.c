@@ -146,3 +146,35 @@ void kCls(const char *pcParameterBuffer) {
 void kShowTotalRAMSize(const char *pcParameterBuffer) {
     kPrintf("Total RAM Size = %d MB\n", kGetTotalRAMSize());
 }
+
+// 문자열로 된 숫자를 숫자로 변환하여 화면에 출력
+void kStringToDecimalHexTest(const char *pcParameterBuffer) {
+    char vcParameter[100];
+    int iLength;
+    PARAMETERLIST stList;
+    int iCount = 0;
+    long lValue;
+
+    kInitializeParameter(&stList, pcParameterBuffer);
+
+    while(1) {
+        // 다음 파라미터를 구함, 파라미터의 길이가 0이면 파라미터가 없는 것이므로 종료
+        iLength = kGetNextParameter(&stList, vcParameter);
+        if(iLength == 0) {
+            break;
+        }
+
+        // 파라미터에 대한 정보를 출력하고 16진수인지 10진수인지 판단하여 변환한 후 결과를 printf로 출력
+        kPrintf("Param %d = '%s', Length = %d, ", iCount+1, vcParameter, iLength);
+
+        // 0x로 시작하면 16진수, 그외에는 10진수로 판단
+        if(kMemCmp(vcParameter, "0x", 2) == 0) {
+            lValue = kAToI(vcParameter+2, 16);
+            kPrintf("HEX Value = %q\n", lValue);
+        }else {
+            lValue = kAToI(vcParameter, 10);
+            kPrintf("Decimal Value = %d\n", lValue);
+        }
+        iCount++;
+    }
+}
