@@ -212,3 +212,13 @@ void kStringToDecimalHexTest(const char *pcParameterBuffer) {
         iCount++;
     }
 }
+
+// PC를 재시작
+void kShutdown(const char *pcParameterBuffer) {
+    kPrintf("System Shutdown Start...\n");
+
+    // 키보드 컨트롤러를 통해 PC를 재시작
+    kPrintf("Press Any Key To Reboot PC...");
+    kGetCh();
+    kReboot();
+}

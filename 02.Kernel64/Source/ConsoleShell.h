@@ -48,5 +48,6 @@ void kHelp(const char *pcCommandBuffer);
 void kCls(const char *pcParameterBuffer);
 void kShowTotalRAMSize(const char *pcParameterBuffer);
 void kStringToDecimalHexTest(const char *pcParameterBuffer);
+void kShutdown(const char *pcParameterBuffer);
 
 #endif /*__CONSOLESHELL_H__*/
