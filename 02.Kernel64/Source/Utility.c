@@ -85,6 +85,36 @@ int kIToA(long lValue, char *pcBuffer, int iRadix) {
     return iReturn;
 }
 
+// 16진수 값을 문자열로 변환
+int kHexToString(QWORD qwValue, char *pcBuffer) {
+    QWORD i;
+    QWORD qwCurrentValue;
+
+    // 0이 들어오면 바로 처리
+    if(qwValue == 0) {
+        pcBuffer[0] = '0';
+        pcBuffer[1] = '\0';
+        return 1;
+    }
+
+    // 버퍼에 1의 자리부터 16, 256, ...의 자리 순서로 숫자 삽입
+    for(i=0; qwValue>0; i++) {
+        qwCurrentValue = qwValue % 16;
+        if(qwCurrentValue >= 10) {
+            pcBuffer[i] = 'A' + (qwCurrentValue-10);
+        }else {
+            pcBuffer[i] = '0' + qwCurrentValue;
+        }
+        qwValue = qwValue / 16;
+    }
+    pcBuffer[i] = '\0';
+
+    // 버퍼에 들어 있는 문자열을 뒤집어서 ... 256, 16, 1의 자리 순서로 변경
+    kReverseString(pcBuffer);
+    
+    return i;
+}
+
 // 10진수 값을 문자열로 변환
 int kDecimalToString(long lValue, char *pcBuffer) {
     long i;

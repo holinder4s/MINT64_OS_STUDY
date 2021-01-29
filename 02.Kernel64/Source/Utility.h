@@ -11,6 +11,7 @@ int kMemCmp(void *pvDestination, const void *pvSource, int iSize);
 BOOL kSetInterruptFlag(BOOL bEnableInterrupt);
 int kStrLen(const char *pcBuffer);
 int kIToA(long lValue, char *pcBuffer, int iRadix);
+int kHexToString(QWORD qwValue, char *pcBuffer);
 int kDecimalToString(long lValue, char *pcBuffer);
 void kReverseString(char *pcBuffer);
 int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap);
