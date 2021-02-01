@@ -224,7 +224,7 @@ int kDecimalToString(long lValue, char *pcBuffer) {
     // 만약 음수면 출력 버퍼에 '-'를 추가하고 양수로 변환
     if(lValue < 0) {
         i=1;
-        pcBuffer[0] - '-';
+        pcBuffer[0] = '-';
         lValue = -lValue;
     }else {
         i=0;

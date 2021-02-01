@@ -5,7 +5,7 @@
 
 // 매크로
 #define CONSOLESHELL_MAXCOMMANDBUFFERCOUNT  300
-#define CONSOLESHELL_PROMPTMESSAGE          "MINT64>"
+#define CONSOLESHELL_PROMPTMESSAGE          "MINT64> "
 
 // 문자열포인터를 파라미터로 받는 함수 포인터 타입 정의
 typedef void (*CommandFunction)(const char *pcParameter);
