@@ -12,7 +12,7 @@ void Main(void) {
     int iCursorX, iCursorY;
 
     // 콘솔을 먼저 초기화한 후, 다음 작업을 수행
-    kInitializeConsole(0, 10);
+    kInitializeConsole(0, 11);
     kPrintf("Switch To IA-32e Mode Success~!!\n");
     kPrintf("IA-32e C Language Kernel Start..............[PASS]\n");
     kPrintf("Initialize Console..........................[PASS]\n");

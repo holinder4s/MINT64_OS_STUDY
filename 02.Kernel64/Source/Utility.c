@@ -340,6 +340,7 @@ int kVSPrintf(char *pcBuffer, const char *pcFormatString, va_list ap) {
         else {
             // 문자를 그대로 출력하고 버퍼의 인덱스를 1만큼 이동
             pcBuffer[iBufferIndex] = pcFormatString[i];
+            iBufferIndex++;
         }
     }
     // NULL을 추가해 완전한 문자열로 만들고 출력한 문자의 길이를 반환
