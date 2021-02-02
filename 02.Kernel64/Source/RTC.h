@@ -20,4 +20,7 @@
 // BCD 포맷을 Binary로 변환하는 매크로
 #define RTC_BCDTOBINARY( x )    ((((x) >> 4) * 10) + ((x) & 0x0F))
 
+// 함수
+void kReadRTCTime(BYTE *pbHour, BYTE *pbMinute, BYTE *pbSecond);
+
 #endif /*__RTC_H__*/

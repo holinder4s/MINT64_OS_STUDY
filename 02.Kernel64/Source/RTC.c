@@ -1,0 +1,24 @@
+#include "RTC.h"
+
+// CMOS 메모리에서 RTC 컨트롤러가 저장한 현재 시간을 읽음
+void kReadRTCTime(BYTE *pbHour, BYTE *pbMinute, BYTE *pbSecond) {
+    BYTE bData;
+
+    // CMOS 메모리 어드레스 레지스터(포트 0x70)에 시간을 저장하는 레지스터 지정
+    kOutPortByte(RTC_CMOSADDRESS, RTC_ADDRESS_HOUR);
+    // CMOS 데이터 레지스터(포트 0x71)에서 시간을 읽음
+    bData = kInPortByte(RTC_CMOSDATA);
+    *pbHour = RTC_BCDTOBINARY(bData);
+
+    // CMOS 메모리 어드레스 레지스터(포트 0x70)에 분을 저장하는 레지스터 지정
+    kOutPortByte(RTC_CMOSADDRESS, RTC_ADDRESS_MINUTE);
+    // CMOS 데이터 레지스터(포트 0x71)에서 분을 읽음
+    bData = kInPortByte(RTC_CMOSDATA);
+    *pbMinute = RTC_BCDTOBINARY(bData);
+
+    // CMOS 메모리 어드레스 레지스터(포트 0x70)에 초를 저장하는 레지스터 지정
+    kOutPortByte(RTC_CMOSADDRESS, RTC_ADDRESS_SECOND);
+    // CMOS 데이터 레지스터(포트 0x71)에서 초를 읽음
+    bData = kInPortByte(RTC_CMOSDATA);
+    *pbSecond = RTC_BCDTOBINARY(bData);
+}
