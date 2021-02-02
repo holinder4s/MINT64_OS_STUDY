@@ -15,6 +15,7 @@ SHELLCOMMANDENTRY gs_vstCommandTable[] = {
     {"shutdown", "Shutdown And Reboot OS", kShutdown},
     {"settimer", "Set PIT Controller Counter0, ex)settimer 10(ms) 1(periodic)", kSetTimer},
     {"wait", "Wait ms Using PIT, ex)wait 100(ms)", kWaitUsingPIT},
+    {"rdtsc", "Read Time Stamp Counter", kReadTimeStampCounter},
 };
 
 //=========================================================================
@@ -285,4 +286,12 @@ void kWaitUsingPIT(const char *pcParameterBuffer) {
 
     // 타이머 복원
     kInitializePIT(MSTOCOUNT(1), TRUE);
+}
+
+// 타임 스탬프 카운터를 읽음
+void kReadTimeStampCounter(const char *pcParameterBuffer) {
+    QWORD qwTSC;
+
+    qwTSC = kReadTSC();
+    kPrintf("Time Stamp Counter = %q\n", qwTSC);
 }
