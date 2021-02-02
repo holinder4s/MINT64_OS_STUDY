@@ -15,3 +15,22 @@ void kInitializePIT(WORD wCount, BOOL bPeriodic) {
     kOutPortByte(PIT_PORT_COUNTER0, wCount);
     kOutPortByte(PIT_PORT_COUNTER0, wCount >> 8);
 }
+
+// 카운터 0의 현재 값을 반환
+WORD kReadCounter0(void) {
+    BYTE bHighByte, bLowByte;
+    WORD wTemp = 0;
+
+    // PIT 컨트롤 레지스터(포트 0x43)에 래치 커맨드를 전송하여 카운터 0에 있는 현재 값을 읽음
+    kOutPortByte(PIT_PORT_CONTROL, PIT_COUNTER0_LATCH);
+
+    // 카운터 0(포트 0x40)에서 LSB -> MSB 순으로 카운터 값을 읽음
+    bLowByte = kInPortByte(PIT_PORT_COUNTER0);
+    bHighByte = kInPortByte(PIT_PORT_COUNTER0);
+
+    // 읽은 값을 16비트로 합하여 반환
+    wTemp = bHighByte;
+    wTemp = (wTemp << 8) | bLowByte;
+
+    return wTemp;
+}
