@@ -51,3 +51,16 @@ void kReadRTCDate(WORD *pwYear, BYTE *pbMonth, BYTE *pbDayOfMonth, BYTE *pbDayOf
     bData = kInPortByte(RTC_CMOSDATA);
     *pbDayOfWeek = RTC_BCDTOBINARY(bData);
 }
+
+// 요일 값을 이용해서 해당 요일의 문자열을 반환
+char *kConvertDayOfWeekToString(BYTE bDayOfWeek) {
+    static char *vpcDayOfWeekString[8] = {"Error", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+    // 요일 범위가 넘어가면 에러를 반환
+    if(bDayOfWeek >= 8) {
+        return vpcDayOfWeekString[0];
+    }
+    
+    // 요일을 반환
+    return vpcDayOfWeekString[bDayOfWeek];
+}
