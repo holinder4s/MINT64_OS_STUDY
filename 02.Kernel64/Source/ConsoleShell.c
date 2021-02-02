@@ -16,6 +16,7 @@ SHELLCOMMANDENTRY gs_vstCommandTable[] = {
     {"settimer", "Set PIT Controller Counter0, ex)settimer 10(ms) 1(periodic)", kSetTimer},
     {"wait", "Wait ms Using PIT, ex)wait 100(ms)", kWaitUsingPIT},
     {"rdtsc", "Read Time Stamp Counter", kReadTimeStampCounter},
+    {"cpuspeed", "Measure Procesor Speed", kMeasureProcessorSpeed},
 };
 
 //=========================================================================
@@ -294,4 +295,27 @@ void kReadTimeStampCounter(const char *pcParameterBuffer) {
 
     qwTSC = kReadTSC();
     kPrintf("Time Stamp Counter = %q\n", qwTSC);
+}
+
+// 프로세서의 속도를 측정
+void kMeasureProcessorSpeed(const char *pcParameterBuffer) {
+    int i;
+    QWORD qwLastTSC, qwTotalTSC = 0;
+
+    kPrintf("Now Measuring.");
+
+    // 10초 동안 변화한 타임 스탬프 카운터를 이용하여 프로세서의 속도를 간접적으로 측정
+    kDisableInterrupt();
+    for(i=0; i<200; i++) {
+        qwLastTSC = kReadTSC();
+        kWaitUsingDirectPIT(MSTOCOUNT(50));
+        qwTotalTSC += kReadTSC() - qwLastTSC;
+
+        kPrintf(".");
+    }
+    // 타이머 복원
+    kInitializePIT(MSTOCOUNT(1), TRUE);
+    kEnableInterrupt();
+
+    kPrintf("\nCPU Speed = %d MHz\n", qwTotalTSC / 10 / 1000 / 1000);
 }
