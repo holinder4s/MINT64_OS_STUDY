@@ -17,6 +17,7 @@ SHELLCOMMANDENTRY gs_vstCommandTable[] = {
     {"wait", "Wait ms Using PIT, ex)wait 100(ms)", kWaitUsingPIT},
     {"rdtsc", "Read Time Stamp Counter", kReadTimeStampCounter},
     {"cpuspeed", "Measure Procesor Speed", kMeasureProcessorSpeed},
+    {"date", "Show Date And Time", kShowDateAndTime},
 };
 
 //=========================================================================
@@ -318,4 +319,18 @@ void kMeasureProcessorSpeed(const char *pcParameterBuffer) {
     kEnableInterrupt();
 
     kPrintf("\nCPU Speed = %d MHz\n", qwTotalTSC / 10 / 1000 / 1000);
+}
+
+// RTC 컨트롤러에 저장된 일자 및 시간 정보를 표시
+void kShowDateAndTime(const char *pcParameterBuffer) {
+    BYTE bSecond, bMinute, bHour;
+    BYTE bDayOfWeek, bDayOfMonth, bMonth;
+    WORD wYear;
+
+    // RTC 컨트롤러에서 시간 및 일자를 읽음
+    kReadRTCTime(&bHour, &bMinute, &bSecond);
+    kReadRTCDate(&wYear, &bMonth, &bDayOfMonth, &bDayOfWeek);
+
+    kPrintf("Date: %d/%d/%d %s, ", wYear, bMonth, bDayOfMonth, kConvertDayOfWeekToString(bDayOfWeek));
+    kPrintf("Time: %d:%d:%d\n", bHour, bMinute, bSecond);
 }
