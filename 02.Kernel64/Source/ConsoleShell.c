@@ -14,6 +14,7 @@ SHELLCOMMANDENTRY gs_vstCommandTable[] = {
     {"strtod", "String To Decimal/Hex Convert", kStringToDecimalHexTest},
     {"shutdown", "Shutdown And Reboot OS", kShutdown},
     {"settimer", "Set PIT Controller Counter0, ex)settimer 10(ms) 1(periodic)", kSetTimer},
+    {"wait", "Wait ms Using PIT, ex)wait 100(ms)", kWaitUsingPIT},
 };
 
 //=========================================================================
@@ -253,4 +254,35 @@ void kSetTimer(const char *pcParameterBuffer) {
 
     kInitializePIT(MSTOCOUNT(lValue), bPeriodic);
     kPrintf("Time = %d ms, Periodic = %d Change Complete\n", lValue, bPeriodic);
+}
+
+// PIT 컨트롤러를 직접 사용하여 ms 동안 대기
+void kWaitUsingPIT(const char *pcParameterBuffer) {
+    char vcParameter[100];
+    int iLength;
+    PARAMETERLIST stList;
+    long lMillisecond;
+    int i;
+
+    // 파라미터 초기화
+    kInitializeParameter(&stList, pcParameterBuffer);
+    if(kGetNextParameter(&stList, vcParameter) == 0) {
+        kPrintf("ex)wait 100(ms)\n");
+        return;
+    }
+
+    lMillisecond = kAToI(pcParameterBuffer, 10);
+    kPrintf("%d ms Sleep Start...\n", lMillisecond);
+
+    // 인터럽트를 비활성화하고 PIT 컨트롤러를 통해 직접 시간을 측정
+    kDisableInterrupt();
+    for(i=0; i<lMillisecond / 30; i++) {
+        kWaitUsingDirectPIT(MSTOCOUNT(30));
+    }
+    kWaitUsingDirectPIT(MSTOCOUNT(lMillisecond % 30));
+    kEnableInterrupt();
+    kPrintf("%d ms Sleep Complete\n", lMillisecond);
+
+    // 타이머 복원
+    kInitializePIT(MSTOCOUNT(1), TRUE);
 }
