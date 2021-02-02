@@ -17,4 +17,7 @@
 #define RTC_ADDRESS_MONTH       0x08
 #define RTC_ADDRESS_YEAR        0x09
 
+// BCD 포맷을 Binary로 변환하는 매크로
+#define RTC_BCDTOBINARY( x )    ((((x) >> 4) * 10) + ((x) & 0x0F))
+
 #endif /*__RTC_H__*/
