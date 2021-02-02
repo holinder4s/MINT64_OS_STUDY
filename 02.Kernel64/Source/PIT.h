@@ -34,5 +34,6 @@
 // 함수
 void kInitializePIT(WORD wCount, BOOL bPeriodic);
 WORD kReadCounter0(void);
+void kWaitUsingDirectPIT(WORD wCount);
 
 #endif /*__PIT_H__*/
