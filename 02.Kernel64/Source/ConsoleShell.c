@@ -2,6 +2,9 @@
 #include "Console.h"
 #include "Keyboard.h"
 #include "Utility.h"
+#include "PIT.h"
+#include "RTC.h"
+#include "AssemblyUtility.h"
 
 // 커맨드 테이블 정의
 SHELLCOMMANDENTRY gs_vstCommandTable[] = {
@@ -10,6 +13,7 @@ SHELLCOMMANDENTRY gs_vstCommandTable[] = {
     {"totalram", "Show Total RAM Size", kShowTotalRAMSize},
     {"strtod", "String To Decimal/Hex Convert", kStringToDecimalHexTest},
     {"shutdown", "Shutdown And Reboot OS", kShutdown},
+    {"settimer", "Set PIT Controller Counter0, ex)settimer 10(ms) 1(periodic)", kSetTimer},
 };
 
 //=========================================================================
@@ -221,4 +225,32 @@ void kShutdown(const char *pcParameterBuffer) {
     kPrintf("Press Any Key To Reboot PC...");
     kGetCh();
     kReboot();
+}
+
+// PIT 컨트롤러의 카운터 0 설정
+void kSetTimer(const char *pcParameterBuffer) {
+    char vcParameter[100];
+    PARAMETERLIST stList;
+    long lValue;
+    BOOL bPeriodic;
+
+    // 파라미터 초기화
+    kInitializeParameter(&stList, pcParameterBuffer);
+
+    // milisecond 추출
+    if(kGetNextParameter(&stList, vcParameter) == 0) {
+        kPrintf("ex)settimer 10(ms) 1(periodic)\n");
+        return;
+    }
+    lValue = kAToI(vcParameter, 10);
+
+    // Periodic 추출
+    if(kGetNextParameter(&stList, vcParameter) == 0) {
+        kPrintf("ex)settimer 10(ms) 1(periodic)\n");
+        return;
+    }
+    bPeriodic = kAToI(vcParameter, 10);
+
+    kInitializePIT(MSTOCOUNT(lValue), bPeriodic);
+    kPrintf("Time = %d ms, Periodic = %d Change Complete\n", lValue, bPeriodic);
 }
