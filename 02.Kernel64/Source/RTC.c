@@ -22,3 +22,32 @@ void kReadRTCTime(BYTE *pbHour, BYTE *pbMinute, BYTE *pbSecond) {
     bData = kInPortByte(RTC_CMOSDATA);
     *pbSecond = RTC_BCDTOBINARY(bData);
 }
+
+// CMOS 메모리에서 RTC 컨트롤러가 저장한 현재 일자를 읽음
+void kReadRTCDate(WORD *pwYear, BYTE *pbMonth, BYTE *pbDayOfMonth, BYTE *pbDayOfWeek) {
+    BYTE bData;
+
+    // CMOS 메모리 어드레스 레지스터(포트 0x70)에 연도를 저장하는 레지스터 지정
+    kOutPortByte(RTC_CMOSADDRESS, RTC_ADDRESS_YEAR);
+    // CMOS 데이터 레지스터(포트 0x71)에서 연도를 읽음
+    bData = kInPortByte(RTC_CMOSDATA);
+    *pwYear = RTC_BCDTOBINARY(bData) + 2000;
+
+    // CMOS 메모리 어드레스 레지스터(포트 0x70)에 월을 저장하는 레지스터 지정
+    kOutPortByte(RTC_CMOSADDRESS, RTC_ADDRESS_MONTH);
+    // CMOS 데이터 레지스터(포트 0x71)에서 월을 읽음
+    bData = kInPortByte(RTC_CMOSDATA);
+    *pbMonth = RTC_BCDTOBINARY(bData);
+
+    // CMOS 메모리 어드레스 레지스터(포트 0x70)에 일을 저장하는 레지스터 지정
+    kOutPortByte(RTC_CMOSADDRESS, RTC_ADDRESS_DAYOFMONTH);
+    // CMOS 데이터 레지스터(포트 0x71)에서 일을 읽음
+    bData = kInPortByte(RTC_CMOSDATA);
+    *pbDayOfMonth = RTC_BCDTOBINARY(bData);
+
+    // CMOS 메모리 어드레스 레지스터(포트 0x70)에 요일을 저장하는 레지스터 지정
+    kOutPortByte(RTC_CMOSADDRESS, RTC_ADDRESS_DAYOFWEEK);
+    // CMOS 데이터 레지스터(포트 0x71)에서 요일을 읽음
+    bData = kInPortByte(RTC_CMOSDATA);
+    *pbDayOfWeek = RTC_BCDTOBINARY(bData);
+}
