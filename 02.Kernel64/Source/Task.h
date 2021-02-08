@@ -59,4 +59,7 @@ typedef struct kTaskControlBlockStruct {
 
 #pragma pack(pop)
 
+// 함수
+void kSetUpTask(TCB *pstTCB, QWORD qwID, QWORD qwFlags, QWORD qwEntryPointAddress, void *pvStackAddress, QWORD qwStackSize);
+
 #endif /*__TASK_H__*/
