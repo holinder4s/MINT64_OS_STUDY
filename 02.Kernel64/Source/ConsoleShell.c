@@ -340,6 +340,20 @@ void kShowDateAndTime(const char *pcParameterBuffer) {
 static TCB gs_vstTask[2] = {0,};
 static QWORD gs_vstStack[1024] = {0, };
 
+// 태스크 전환을 테스트하는 태스크
+void kTestTask(void) {
+    int i=0;
+
+    while(1) {
+        // 메시지를 출력하고 키 입력을 대기
+        kPrintf("[%d] This message is from kTestTask. Press any key to switch kConsoleShell~!!\n", i++);
+        kGetCh();
+        
+        // 위에서 키가 입력되면 태스크를 전환
+        kSwitchContext(&(gs_vstTask[1].stContext), &(gs_vstTask[0].stContext));
+    }
+}
+
 // 태스크를 생성해서 멀티태스킹 수행
 void kCreateTestTask(const char *pcParameterBuffer) {
     KEYDATA stData;
