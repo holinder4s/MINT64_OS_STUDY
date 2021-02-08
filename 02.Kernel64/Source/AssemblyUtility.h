@@ -2,6 +2,7 @@
 #define __ASSEMBLYUTILITY_H__
 
 #include "Types.h"
+#include "Task.h"
 
 // 함수
 BYTE kInPortByte(WORD wPort);
