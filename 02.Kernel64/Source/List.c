@@ -94,3 +94,16 @@ void *kRemoveListFromHeader(LIST *pstList) {
     pstLink = (LISTLINK *)pstList->pvHeader;
     return kRemoveList(pstList, pstLink->qwID);
 }
+
+// 리스트의 마지막 데이터를 제거하여 반환
+void *kRemoveListFromTail(LIST *pstList) {
+    LISTLINK *pstLink;
+
+    if(pstList->iItemCount == 0) {
+        return NULL;
+    }
+
+    // 테일을 제거하고 반환
+    pstLink = (LISTLINK *)pstList->pvTail;
+    return kRemoveList(pstList, pstLink->qwID);
+}
