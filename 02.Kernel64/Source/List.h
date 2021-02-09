@@ -15,6 +15,16 @@ typedef struct kListLinkStruct {
     QWORD qwID;
 } LISTLINK;
 
+// 리스트를 관리하는 자료구조
+typedef struct kListManagerStruct {
+    // 리스트의 데이터의 수
+    int iItemCount;
+
+    // 리스트의 첫 번째와 마지막 데이터의 어드레스
+    void *pvHeader;
+    void *pvTail;
+} LIST;
+
 #pragma pack(pop)
 
 #endif /*__LIST_H__*/
