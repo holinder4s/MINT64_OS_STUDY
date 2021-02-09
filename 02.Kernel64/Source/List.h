@@ -27,4 +27,7 @@ typedef struct kListManagerStruct {
 
 #pragma pack(pop)
 
+// 함수
+void kAddListToTail(LIST *pstList, void *pvItem);
+
 #endif /*__LIST_H__*/
