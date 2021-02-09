@@ -29,5 +29,6 @@ typedef struct kListManagerStruct {
 
 // 함수
 void kAddListToTail(LIST *pstList, void *pvItem);
+void kAddListToHeader(LIST *pstList, void *pvItem);
 
 #endif /*__LIST_H__*/
