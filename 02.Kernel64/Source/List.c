@@ -81,3 +81,16 @@ void *kRemoveList(LIST *pstList, QWORD qwID) {
     }
     return NULL;
 }
+
+// 리스트의 첫 번째 데이터를 제거하여 반환
+void *kRemoveListFromHeader(LIST *pstList) {
+    LISTLINK *pstLink;
+
+    if(pstList->iItemCount == 0) {
+        return NULL;
+    }
+
+    // 헤더를 제거하고 반환
+    pstLink = (LISTLINK *)pstList->pvHeader;
+    return kRemoveList(pstList, pstLink->qwID);
+}

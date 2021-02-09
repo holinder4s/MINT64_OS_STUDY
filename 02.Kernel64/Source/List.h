@@ -31,5 +31,6 @@ typedef struct kListManagerStruct {
 void kAddListToTail(LIST *pstList, void *pvItem);
 void kAddListToHeader(LIST *pstList, void *pvItem);
 void *kRemoveList(LIST *pstList, QWORD qwID);
+void *kRemoveListFromHeader(LIST *pstList);
 
 #endif /*__LIST_H__*/
